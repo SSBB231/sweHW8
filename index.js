@@ -387,6 +387,12 @@ class Appointment
         console.log(appointment.parties);
         appointment.user = this.user.getUserName();
         return appointment;
+
+        // console.log(this.parties);
+        // let appointment = new Appointment(this.user.getUserName(), this.place, this.parties, this.startDate.toJSON(), this.endDate.toJSON(), this.description);
+        // console.log(appointment.parties);
+        // appointment.user = this.user.getUserName();
+        // return appointment;
     }
 
     getStartDate()
