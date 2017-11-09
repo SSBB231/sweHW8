@@ -14,8 +14,14 @@ class App extends Component
 
     changeToUsersScreen()
     {
-        alert("Changing to All Users Screen");
+        // alert("Changing to All Users Screen");
         this.setState({view:"users"});
+    }
+
+    changeToHomeScreen()
+    {
+        // alert("Changing to Home Screen");
+        this.setState({view:"home"});
     }
 
     render()
@@ -40,7 +46,10 @@ class App extends Component
         {
             return (
                 <div class="App">
+                    <h1>These Are All the App's Registered Users</h1>
                     <AllUsers/>
+                    <br/>
+                    <button onClick={()=>this.changeToHomeScreen()}>Go Back to Homescreen</button>
                 </div>
             );
         }
