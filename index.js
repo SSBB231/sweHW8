@@ -198,7 +198,6 @@ let loadFromFireBase = true;
 //End of Global Functions=====================================
 
 //Class Declarations==========================================
-
 class User
 {
     constructor(name, lastName, uName, uEmail)
@@ -357,6 +356,7 @@ class Appointment
 {
     constructor(user, place, parties, startDate, endDate, description)
     {
+        this.appointmentID = user.getName()+startDate.toString();
         this.user = user;
         this.place = place;
 
@@ -371,6 +371,11 @@ class Appointment
         }
 
         this.description = description;
+    }
+
+    getID()
+    {
+        return this.appointmentID;
     }
 
     makeSerializable()
@@ -864,7 +869,7 @@ function downloadFriends(user)
 
 function downloadAppointments(user)
 {
-    let freindsRef = database.ref('appointments').child(user.getUserName());
+    let freindsRef = database.ref('appointments');
 
     freindsRef.once('value')
         .then((snapshot) =>
@@ -873,6 +878,8 @@ function downloadAppointments(user)
 
             console.log(appointments);
         });
+
+    //Download parties for this appointment
 }
 
 function downloadDataFromFireBase()
@@ -950,11 +957,17 @@ function saveAppointmentToDatabase(data, appointment)
 {
     let serialAp = appointment.makeSerializable();
 
-    database.ref('appointments/' + data.getUserName()).set(serialAp);
-    let newNode = database.ref('appointments/' + data.getUserName()).child('parties');
+    database.ref('appointments/'+appointment.getID()).set(serialAp);
 
-    console.log("THESE FRIENDS WILL BE APPOINTED: "+serialAp.parties);
-    //this part isn't working. Set is somehow not put into the tree.
+    //Remove previous parties if there were any
+    database.ref('parties/'+appointment.getID()).remove();
+
+    //Iterate through parties and push them into the tree
+    let newNode = database.ref('parties/'+appointment.getID());
+    for(let party of serialAp.getParties())
+    {
+        newNode.push(party);
+    }
 }
 
 function deleteUserFromDatabase(user)
