@@ -8,21 +8,19 @@ class App extends Component
 
     constructor(props)
     {
-        super();
+        super(props);
         this.state = {view:"home"};
     }
 
-    changeToUsers()
+    changeToUsersScreen()
     {
-        this.setState((prevState, props)=>
-        {
-            return {view:"users", currentItem:"users"};
-        });
+        alert("Changing to All Users Screen");
+        this.setState({view:"users"});
     }
 
     render()
     {
-        if(this.state.view == "home")
+        if(this.state.view === "home")
         {
             console.log("RENDERING SOMETHING");
             return (
@@ -34,9 +32,15 @@ class App extends Component
                     {/*<p className="App-intro">*/}
                     {/*To get started, edit <code>src/App.js</code> and save to reload.*/}
                     {/*</p>*/}
-                    <HomeScreen/>
+                    <HomeScreen toUsers={()=>this.changeToUsersScreen()}/>
+                </div>
+            );
+        }
+        else if(this.state.view === "users")
+        {
+            return (
+                <div class="App">
                     <AllUsers/>
-                    <CelinesAppointments/>
                 </div>
             );
         }
@@ -215,7 +219,7 @@ class HomeScreen extends Component
                                 <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="/html/profile.html">Profile<span
+                                <a class="nav-link" onClick={this.props.toUsers}>Users<span
                                     class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item active">
