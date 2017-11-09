@@ -307,9 +307,9 @@ class User
         //     })
 
         let aString = appointment.getStartDate().toString();
-        console.log(aString);
+        console.log("CHECKING APPOINTMENTS AGAIN: "+appointment.parties);
         this.appointments.set(aString, appointment);
-        saveAppointmentToDatabase(this, appointment);
+        saveAppointmentToDatabase(appointment);
     }
 
     getAppointments()
@@ -356,7 +356,8 @@ class Appointment
 {
     constructor(user, place, parties, startDate, endDate, description)
     {
-        this.appointmentID = user.getName()+startDate.toString();
+        console.log(user);
+        this.appointmentID = user.getUserName()+startDate.toString();
         this.user = user;
         this.place = place;
 
@@ -367,6 +368,7 @@ class Appointment
 
         for (let party of parties)
         {
+            console.log("ADDING THIS PARTY" + party);
             this.addParty(user, party);
         }
 
@@ -380,7 +382,11 @@ class Appointment
 
     makeSerializable()
     {
-        return new Appointment(this.user.getName(), this.place, this.parties, this.startDate.toJSON(), this.endDate.toJSON(), this.description);
+        console.log(this.parties);
+        let appointment = new Appointment(this.user, this.place, this.parties, this.startDate.toJSON(), this.endDate.toJSON(), this.description);
+        console.log(appointment.parties);
+        appointment.user = this.user.getUserName();
+        return appointment;
     }
 
     getStartDate()
@@ -953,7 +959,7 @@ function addFriendListToDatabase(data)
     console.log("Added all friends==================");
 }
 
-function saveAppointmentToDatabase(data, appointment)
+function saveAppointmentToDatabase(appointment)
 {
     let serialAp = appointment.makeSerializable();
 
@@ -964,8 +970,13 @@ function saveAppointmentToDatabase(data, appointment)
 
     //Iterate through parties and push them into the tree
     let newNode = database.ref('parties/'+appointment.getID());
+    console.log("============= Parties =====================");
+    console.log(serialAp.getParties());
+    console.log("============= Parties =====================");
+
     for(let party of serialAp.getParties())
     {
+        console.log("ADDING " + party + " TO THE DATABASE");
         newNode.push(party);
     }
 }
