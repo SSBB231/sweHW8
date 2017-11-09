@@ -9,7 +9,37 @@ class App extends Component
     constructor(props)
     {
         super(props);
-        this.state = {view:"home"};
+        this.state = {view:"home", user: null};
+    }
+
+    componentDidMount()
+    {
+        //fetch celine from the user database
+        fetch('users/cdione')
+            .then((response)=>
+            {
+                return response.json();
+            })
+            .then((retrievedUser)=>
+            {
+                this.setState({user: retrievedUser});
+            })
+            .catch((error)=>
+            {
+                console.log(error);
+            });
+    }
+
+    login()
+    {
+        /*Ben's Login Logic Here*/
+        //Should fetch user from backend and put it in variable named fetched
+        //should call this.setState({user: fetchedUser});
+    }
+
+    changeToAllAppointmentsScreen()
+    {
+        this.setState({view: "allappointments"});
     }
 
     changeToUsersScreen()
@@ -22,6 +52,11 @@ class App extends Component
     {
         // alert("Changing to Home Screen");
         this.setState({view:"home"});
+    }
+
+    changeToLogin()
+    {
+        this.setState({view:"login"});
     }
 
     render()
@@ -38,7 +73,7 @@ class App extends Component
                     {/*<p className="App-intro">*/}
                     {/*To get started, edit <code>src/App.js</code> and save to reload.*/}
                     {/*</p>*/}
-                    <HomeScreen toUsers={()=>this.changeToUsersScreen()}/>
+                    <HomeScreen toUsers={()=>this.changeToUsersScreen()} toLogin={()=>this.changeToLogin()}/>
                 </div>
             );
         }
@@ -53,6 +88,114 @@ class App extends Component
                 </div>
             );
         }
+        else if(this.state.view ==="login")
+        {
+            return (
+                <Login toHome={()=>this.changeToHomeScreen()}/>
+            )
+        }
+    }
+}
+
+//Class To Display ALl Appointments for Given User
+class AllAppointmentsFor extends Component
+{
+    constructor(props)
+    {
+        super(props);
+        this.state = {fetched: false};
+    }
+
+    componentDidMount()
+    {
+        //fetch appointments for the current user
+        fetch('users/'+this.props.user.username+'/appointments')
+            .then((response)=>
+            {
+                return response.json();
+            })
+            .then((appointments)=>
+            {
+
+            })
+            .catch((error)=>
+            {
+                console.log(error);
+            });
+
+        this.setState({fetched: true});
+    }
+
+    render()
+    {
+        if(this.state.fetched)
+        {
+            return (
+                <div>
+                    <h1>Main Content Here</h1>
+                </div>
+            )
+        }
+        else
+        {
+            return (
+                <div>
+                    <h1>Content Was Not Fetched from Server. Please Refresh the Page.</h1>
+                </div>
+            )
+        }
+    }
+}
+
+//Component to Render All Appointments for User in Given Month
+class AppointmentsForMonth extends Component
+{
+    constructor(props)
+    {
+        super(props);
+        this.state = {fetched: false};
+    }
+
+    componentDidMount()
+    {
+
+        this.setState({fetched: true});
+    }
+    render()
+    {
+        return (
+            <div>
+
+            </div>
+        );
+    }
+}
+
+
+//Class to Dsiplay Login Prompt
+class Login extends Component
+{
+    constructor(props)
+    {
+        super(props);
+        this.state = {fetched: false};
+    }
+
+    componentDidMount()
+    {
+
+        this.setState({fetched: true});
+    }
+
+    render()
+    {
+        return (
+            <div>
+                <h1>Login Page</h1>
+                <p>Main Content Here</p>
+                <button onClick={this.props.toHome}>Go Back to Homescreen</button>
+            </div>
+        )
     }
 }
 
@@ -228,11 +371,11 @@ class HomeScreen extends Component
                                 <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item active">
-                                <a class="nav-link" onClick={this.props.toUsers}>Users<span
+                                <a class="nav-link" href="#" onClick={this.props.toUsers}>Users<span
                                     class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Sign In</a>
+                                <a class="nav-link" href="#" onClick={this.props.toLogin}>Log In</a>
                             </li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
