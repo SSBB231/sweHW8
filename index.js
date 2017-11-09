@@ -607,9 +607,8 @@ router.route('/users/:username/appointments/')
                     })
                     .catch((error) =>
                     {
-                        console.log("THIS ARRAY OF FRIENDS WAS RECOVERED: "+req.body.parties);
-
-                        let newAppointment = new Appointment(user, req.body.place, req.body.parties, sDate, eDate, req.body.description);
+                        let newAppointment = new Appointment(user, req.body.place, ["monica", "eric"], sDate, eDate, req.body.description);
+                        console.log(JSON.stringify(newAppointment));
                         user.addAppointment(newAppointment);
                         res.send(error + "\nCreating New Appointment.");
                     });
@@ -964,21 +963,20 @@ function saveAppointmentToDatabase(appointment)
     let serialAp = appointment.makeSerializable();
 
     database.ref('appointments/'+appointment.getID()).set(serialAp);
-
-    //Remove previous parties if there were any
-    database.ref('parties/'+appointment.getID()).remove();
-
-    //Iterate through parties and push them into the tree
-    let newNode = database.ref('parties/'+appointment.getID());
-    console.log("============= Parties =====================");
-    console.log(serialAp.getParties());
-    console.log("============= Parties =====================");
-
-    for(let party of serialAp.getParties())
-    {
-        console.log("ADDING " + party + " TO THE DATABASE");
-        newNode.push(party);
-    }
+    // //Remove previous parties if there were any
+    // database.ref('parties/'+appointment.getID()).remove();
+    //
+    // //Iterate through parties and push them into the tree
+    // let newNode = database.ref('parties/'+appointment.getID());
+    // console.log("============= Parties =====================");
+    // console.log(serialAp.getParties());
+    // console.log("============= Parties =====================");
+    //
+    // for(let party of serialAp.getParties())
+    // {
+    //     console.log("ADDING " + party + " TO THE DATABASE");
+    //     newNode.push(party);
+    // }
 }
 
 function deleteUserFromDatabase(user)
