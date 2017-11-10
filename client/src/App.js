@@ -248,43 +248,57 @@ class AllAppointmentsFor extends Component
             {
                 alert(error);
             });
-
-        this.setState({fetched: true});
     }
 
     render()
     {
-        if (this.state.fetched)
+        if (this.state.fetched === true)
         {
             let rows = [];
+            let appointments = this.state.appointments;
 
-            let index =1;
-            let n=4;
-            for(let i=index;i<=n;i++)
-            rows.push(<tr key={i} ><td>{"test entry #"+i}</td></tr>)
+            console.log("THIS I WILL USE");
+            console.log(appointments);
+            console.log(appointments[0]);
+
+            let index = 0;
+            let n = 3;
+            for (let i = index; i <= n; i++)
+            {
+                let row = [];
+                for (let element in appointments[i])
+                {
+                    row.push(<div>{appointments[i][element].toString()}</div>);
+                }
+                rows.push(
+                    <tr  key={i}>
+                        <td>{row}<br/>
+                            <br/></td>
+                    </tr>);
+            }
             //this all just makes an example table based on n inputs
 
             console.log("ARRAY");
             console.log(this.state.appointments);
-        // rows = ["test entry"];
-        //     let i =0;    //counter to track inside for of loop
-        // for(let app of this.state.appointments)
-        // {
-        //         i++;
-        //     console.log("app in this.state.appointments: "+app);
-        //     rows.push(<tr key={i} ><td>{app}</td></tr>)
+            // rows = ["test entry"];
+            //     let i =0;    //counter to track inside for of loop
+            // for(let app of this.state.appointments)
+            // {
+            //         i++;
+            //     console.log("app in this.state.appointments: "+app);
+            //     rows.push(<tr key={i} ><td>{app}</td></tr>)
 
-        // }
+            // }
             return (
-            <div>
-                <h1>Appointments Table</h1>
-            <table id="simple-board">
-            <tbody>
-            {rows}
-            </tbody>
-            </table>
-            </div>
-        );
+                <div>
+                    <h1>Appointments Table</h1>
+                    <table id="simple-board">
+                        <tbody>
+                        {rows}
+                        </tbody>
+                    </table>
+                </div>
+            );
         }
         else
         {
@@ -335,10 +349,12 @@ class AppointmentsForMonth extends Component
         {
             let rows = [];
 
-            let index =1;
-            let n=4;
-            for(let i=index;i<=n;i++)
-                rows.push(<tr key={i} ><td>{"test entry #"+i}</td></tr>)
+            let index = 1;
+            let n = 4;
+            for (let i = index; i <= n; i++)
+                rows.push(<tr padding-bottom="1em" key={i}>
+                    <td>{"test entry #" + i}</td>
+                </tr>)
             //this all just makes an example table based on n inputs
 
             console.log("ARRAY");
