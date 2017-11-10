@@ -187,6 +187,7 @@ let database = firebase.database();
 
 //Keeps track user within the cache
 let users;
+let appointments = [];
 
 //Load from FireBase flag
 let loadFromFireBase = true;
@@ -579,13 +580,13 @@ router.route('/users/:username/appointments/')
         getUserFromMap(req.params.username)
             .then((user) =>
             {
-                let appointments = [];
+                let apps = [];
                 for (let appointment of user.getAllAppointments())
                 {
-                    appointments.push(appointment);
+                    apps.push(appointment);
                 }
 
-                res.send(JSON.stringify(appointments));
+                res.send(JSON.stringify(apps));
             })
             .catch((message) =>
             {
@@ -857,6 +858,42 @@ function getUserFromMap(username)
     });
 }
 
+function downloadAppointments()
+{
+    return new Promise((resolve, reject)=>
+    {
+        let freindsRef = database.ref('appointments');
+
+        freindsRef.once('value')
+            .then((snapshot) =>
+            {
+                let apps = snapshot.val();
+                // console.log(appointments);
+
+                for(let count in apps)
+                {
+                    // console.log("AN APPOINTMENT ==================");
+                    // console.log(appointments[count].appointmentID);
+                    // console.log("END APPOINTMENT==================");
+
+                    let appointment = apps[count];
+                    let newUser = users.get(appointment.user);
+                    console.log(newUser.getUserName());
+                    let newAppt = new Appointment(newUser, appointment.place, appointment.parties, new Date(appointment.startDate), new Date(appointment.endDate), appointment.description);
+                    appointments.push(newAppt);
+                    console.log(newAppt.appointmentID);
+                }
+
+                console.log()
+
+                if(appointments.length===0)
+                    reject("Array was not filled")
+                else
+                    resolve();
+            });
+    })
+}
+
 function downloadFriends(user)
 {
     let freindsRef = database.ref('friends').child(user.getUserName());
@@ -878,46 +915,6 @@ function downloadFriends(user)
         });
 }
 
-function downloadAppointments(user)
-{
-    let freindsRef = database.ref('appointments');
-
-    freindsRef.once('value')
-        .then((snapshot) =>
-        {
-            let appointments = snapshot.val();
-            // console.log(appointments);
-
-            setApps = new Map();
-
-            for(let count in appointments)
-            {
-                // console.log("AN APPOINTMENT ==================");
-                // console.log(appointments[count].appointmentID);
-                // console.log("END APPOINTMENT==================");
-
-                let appointment = appointments[count];
-
-                getUserFromMap(appointment.user)
-                    .then((user)=>
-                    {
-                        let newAppt = new Appointment(user, appointment.place, appointment.parties, appointment.startDate, appointment.endDate, appointment.description);
-                        setApps.set(newAppt.appointmentID, newAppt);
-
-                        // console.log("HAPPENING")
-
-                        // console.log(newAppt.appointmentID);
-                    })
-                    .catch();
-
-
-            }
-
-            console.log("SOMETHING HERE");
-        });
-
-    //Download parties for this appointment
-}
 
 function downloadDataFromFireBase()
 {
@@ -935,16 +932,41 @@ function downloadDataFromFireBase()
                 user = data[element];
                 let newUser = new User(user.name, user.lastName, user.username, user.email);
                 downloadFriends(newUser);
-                downloadAppointments(newUser);
+
+                for(let app of appointments)
+                {
+                    if(app.user===newUser.getUserName())
+                        console.log(app);
+                }
                 //console.log(user);
                 users.set(user.username, newUser);
             }
+
+            downloadAppointments()
+                .then(()=>
+                {
+                    for(let u of users.values())
+                    {
+                        addAppointmentsTo(u);
+                    }
+                })
+                .catch((error)=>{console.log(error)})
         })
         .catch((error) =>
         {
             console.log(error);
         });
+}
 
+function addAppointmentsTo(user)
+{
+    console.log("Got these: "+appointments);
+    console.log(user);
+
+    for(let a of appointments)
+    {
+        user.addAppointment(a);
+    }
 }
 
 function getGoing()
