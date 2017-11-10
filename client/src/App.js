@@ -9,22 +9,24 @@ class App extends Component
     constructor(props)
     {
         super(props);
-        this.state = {view:"home", user: null};
+        this.state = {view: "home", user: null};
     }
+
 
     componentDidMount()
     {
         //fetch celine from the user database
         fetch('users/cdione')
-            .then((response)=>
+            .then((response) =>
             {
                 return response.json();
             })
-            .then((retrievedUser)=>
+            .then((retrievedUser) =>
             {
+                // alert(retrievedUser.username);
                 this.setState({user: retrievedUser});
             })
-            .catch((error)=>
+            .catch((error) =>
             {
                 console.log(error);
             });
@@ -37,31 +39,37 @@ class App extends Component
         //should call this.setState({user: fetchedUser});
     }
 
-    changeToAllAppointmentsScreen()
-    {
-        this.setState({view: "allappointments"});
-    }
-
     changeToUsersScreen()
     {
         // alert("Changing to All Users Screen");
-        this.setState({view:"users"});
+        this.setState({view: "users"});
+    }
+
+    changeToProfile()
+    {
+        // alert("Changing to All Users Screen");
+        this.setState({view: "profile"});
     }
 
     changeToHomeScreen()
     {
         // alert("Changing to Home Screen");
-        this.setState({view:"home"});
+        this.setState({view: "home"});
     }
 
     changeToLogin()
     {
-        this.setState({view:"login"});
+        this.setState({view: "login"});
+    }
+
+    changeToAllAppointments()
+    {
+        this.setState({view: "allappointments"});
     }
 
     render()
     {
-        if(this.state.view === "home")
+        if (this.state.view === "home")
         {
             console.log("RENDERING SOMETHING");
             return (
@@ -73,27 +81,125 @@ class App extends Component
                     {/*<p className="App-intro">*/}
                     {/*To get started, edit <code>src/App.js</code> and save to reload.*/}
                     {/*</p>*/}
-                    <HomeScreen toUsers={()=>this.changeToUsersScreen()} toLogin={()=>this.changeToLogin()}/>
+                    <HomeScreen toUsers={() => this.changeToUsersScreen()}
+                                toLogin={() => this.changeToLogin()}
+                                toAllAppointments={() => this.changeToAllAppointments()}
+                                toProfile={() => this.changeToProfile()}/>
                 </div>
             );
         }
-        else if(this.state.view === "users")
+        else if (this.state.view === "users")
         {
             return (
                 <div class="App">
                     <h1>These Are All the App's Registered Users</h1>
                     <AllUsers/>
                     <br/>
-                    <button onClick={()=>this.changeToHomeScreen()}>Go Back to Homescreen</button>
+                    <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
                 </div>
             );
         }
-        else if(this.state.view ==="login")
+        else if (this.state.view === "login")
         {
             return (
-                <Login toHome={()=>this.changeToHomeScreen()}/>
+                <Login toHome={() => this.changeToHomeScreen()}/>
             )
         }
+        else if (this.state.view === "allappointments")
+        {
+            return (
+                <div>
+                    <AllAppointmentsFor user={this.state.user}/>
+                    <br/>
+                    <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
+                </div>
+            );
+        }
+        else if (this.state.view === "profile")
+        {
+            return (
+                <div>
+                    <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
+                    <Profile user={this.state.user}/>
+                    <br/>
+                </div>
+            );
+        }
+    }
+}
+
+class Profile extends Component
+{
+    constructor(props)
+    {
+        super(props);
+        this.user = props.user;
+    }
+
+    render()
+    {
+        return (
+
+            <div class="container">
+                <div class="header clearfix">
+                    <nav>
+                        <ul class="nav nav-pills float-right">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/html/home.html">Home <span
+                                    class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <h3 class="text-muted">Profile</h3>
+                </div>
+
+                <div class="jumbotron-fluid">
+
+                    <h1 id="username" class="display-3">Username</h1>
+                    <br/>
+                    <div class="row align-self-auto">
+
+                        <div class="col-lg-4">
+                            <h4>Name</h4>
+                            <p id="name">{this.user.name}</p>
+
+                            <h4>Email</h4>
+                            <p id="email">{this.user.email}</p>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <h4>Last Name</h4>
+                            <p id="lastName">{this.user.lastName}</p>
+                        </div>
+
+                    </div>
+
+                    <br/>
+                    <h4>Friends</h4>
+                    <div>
+                        <table id="friends" class="table table-hover">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                            </tr>
+                            <tr>
+                                <td>someName</td>
+                                <td>someEmail</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+
+
+                <footer class="footer">
+                    <p>&copy; utuezi 2017</p>
+                </footer>
+            </div>
+        )
     }
 }
 
@@ -103,24 +209,25 @@ class AllAppointmentsFor extends Component
     constructor(props)
     {
         super(props);
-        this.state = {fetched: false};
+        this.state = {fetched: false, appointments: null};
     }
 
     componentDidMount()
     {
         //fetch appointments for the current user
-        fetch('users/'+this.props.user.username+'/appointments')
-            .then((response)=>
+        fetch('users/' + this.props.user.username + '/appointments')
+            .then((response) =>
             {
                 return response.json();
             })
-            .then((appointments)=>
+            .then((retrievedAppointments) =>
             {
-
+                console.log(retrievedAppointments);
+                this.setState({fetched: true, apppointments: retrievedAppointments});
             })
-            .catch((error)=>
+            .catch((error) =>
             {
-                console.log(error);
+                alert(error);
             });
 
         this.setState({fetched: true});
@@ -128,7 +235,7 @@ class AllAppointmentsFor extends Component
 
     render()
     {
-        if(this.state.fetched)
+        if (this.state.fetched)
         {
             return (
                 <div>
@@ -161,6 +268,7 @@ class AppointmentsForMonth extends Component
 
         this.setState({fetched: true});
     }
+
     render()
     {
         return (
@@ -191,17 +299,78 @@ class Login extends Component
     {
         return (
             <div>
-                <h1>Login Page</h1>
-                <p>Main Content Here</p>
                 <button onClick={this.props.toHome}>Go Back to Homescreen</button>
+                <div class="container">
+
+                    <div class="header clearfix">
+                        <nav id="mainNavBar">
+                            <ul class="nav nav-pills float-right">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Appointments</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <h3 class="text-muted">utuezi</h3>
+                    </div>
+
+                    <main role="main">
+                        <section class="signup">
+                            <div class="jumbotron-fluid">
+                                <h1 class="display-3">Sign Up</h1>
+                                <p class="lead">Wanna manage your appointments like a pro? Sign up today to gain full
+                                    access to our appointment manager service!</p>
+                                <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign Up</a></p>
+                            </div>
+                        </section>
+
+                        <hr/>
+                        <br/>
+
+                        <section class="login">
+                            <div>
+                                <h2 class="alert-light" align="center">Already have an account?</h2>
+                            </div>
+
+                            <div class="container">
+                                <form class="form-signin">
+                                    <h2 class="form-signin-heading">Please sign in</h2>
+                                    <label for="inputEmail" class="sr-only">Email address</label>
+                                    <input type="email" id="inputEmail" class="form-control"
+                                           placeholder="Email address" required autofocus/>
+                                    <label for="inputPassword" class="sr-only">Password</label>
+                                    <input type="password" id="inputPassword" class="form-control"
+                                           placeholder="Password" required/>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="remember-me"/> Remember me
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-lg btn-outline-success btn-block" type="submit">Sign in
+                                    </button>
+                                </form>
+                            </div>
+                        </section>
+                    </main>
+
+                    <br/>
+                    <footer class="footer">
+                        <p>&copy; utuezi 2017</p>
+                    </footer>
+
+                </div>
             </div>
         )
     }
 }
 
-class CelinesAppointments extends Component {
+class CelinesAppointments extends Component
+{
 
-    constructor(props) {
+    constructor(props)
+    {
         super(props);
 
         this.state = {size: 2};
@@ -212,13 +381,16 @@ class CelinesAppointments extends Component {
         this.arrayemails = [3, 2, 1];
     }
 
-    componentDidMount() {
+    componentDidMount()
+    {
 
         fetch('/users/cdione/appointments/')
-            .then(response => {
+            .then(response =>
+            {
                 return response.json();
             })
-            .then((json) => {
+            .then((json) =>
+            {
                 this.userarray = json;
                 console.log("FETCHED APPOINTMENTS");
                 console.log(this.userarray);
@@ -228,25 +400,29 @@ class CelinesAppointments extends Component {
                 this.arrayemails = this.userarray.map((user) => user.email);
                 this.setState({fetched: "true"});
             })
-            .catch(error => {
+            .catch(error =>
+            {
                 console.log(error);
             });
 
     }
 
-    render() {
+    render()
+    {
         let rows = [];
         let count = 0;
-        for (var i = 0; i < this.userarray.length/2; i++) {
+        for (var i = 0; i < this.userarray.length / 2; i++)
+        {
             let rowID = `row${i}`
             let cell = []
 
-            for (var idx = 0; idx < 2; idx++) {
+            for (var idx = 0; idx < 2; idx++)
+            {
                 let cellID = `cell${i}-${idx}`
-                if(count%2==0)
-                    cell.push(<td key={cellID} id={cellID}>{this.firstnames[count]+" "+this.lastnames[count]}</td>)
+                if (count % 2 == 0)
+                    cell.push(<td key={cellID} id={cellID}>{this.firstnames[count] + " " + this.lastnames[count]}</td>)
                 else
-                    cell.push(<td key={cellID} id={cellID}>{this.arrayemails[count-1]}</td>)
+                    cell.push(<td key={cellID} id={cellID}>{this.arrayemails[count - 1]}</td>)
 
                 count++;
                 console.log(this.firstnames);
@@ -270,9 +446,11 @@ class CelinesAppointments extends Component {
     }
 }
 
-class AllUsers extends Component {
+class AllUsers extends Component
+{
 
-    constructor(props) {
+    constructor(props)
+    {
         super(props);
 
         this.state = {size: 2}
@@ -283,13 +461,16 @@ class AllUsers extends Component {
         this.arrayemails = [3, 2, 1];
     }
 
-    componentDidMount() {
+    componentDidMount()
+    {
 
         fetch('/users/')
-            .then(response => {
+            .then(response =>
+            {
                 return response.json();
             })
-            .then((json) => {
+            .then((json) =>
+            {
                 this.userarray = json;
                 console.log(this.userarray);
                 this.firstnames = this.userarray.map((user) => user.name);
@@ -298,25 +479,29 @@ class AllUsers extends Component {
                 this.arrayemails = this.userarray.map((user) => user.email);
                 this.setState({fetched: "true"});
             })
-            .catch(error => {
+            .catch(error =>
+            {
                 console.log(error);
             });
 
     }
 
-    render() {
+    render()
+    {
         let rows = [];
         let count = 0;
-        for (var i = 0; i < this.userarray.length/2; i++) {
+        for (var i = 0; i < this.userarray.length / 2; i++)
+        {
             let rowID = `row${i}`
             let cell = []
 
-            for (var idx = 0; idx < 2; idx++) {
+            for (var idx = 0; idx < 2; idx++)
+            {
                 let cellID = `cell${i}-${idx}`
-                if(count%2==0)
-                    cell.push(<td key={cellID} id={cellID}>{this.firstnames[count]+" "+this.lastnames[count]}</td>)
+                if (count % 2 == 0)
+                    cell.push(<td key={cellID} id={cellID}>{this.firstnames[count] + " " + this.lastnames[count]}</td>)
                 else
-                    cell.push(<td key={cellID} id={cellID}>{this.arrayemails[count-1]}</td>)
+                    cell.push(<td key={cellID} id={cellID}>{this.arrayemails[count - 1]}</td>)
 
                 count++;
                 console.log(this.firstnames);
@@ -376,6 +561,12 @@ class HomeScreen extends Component
                             </li>
                             <li class="nav-item active">
                                 <a class="nav-link" href="#" onClick={this.props.toLogin}>Log In</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#" onClick={this.props.toAllAppointments}>Appointments</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#" onClick={this.props.toProfile}>Profile</a>
                             </li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">

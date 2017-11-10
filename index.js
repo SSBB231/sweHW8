@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client/public/dist')));
 
 
 //App Globals=================================================
@@ -356,7 +356,7 @@ class Appointment
 {
     constructor(user, place, parties, startDate, endDate, description)
     {
-        console.log(user);
+        // console.log(user);
         this.appointmentID = user.getUserName()+startDate.toString();
         this.user = user;
         this.place = place;
@@ -368,7 +368,7 @@ class Appointment
 
         for (let party of parties)
         {
-            console.log("ADDING THIS PARTY" + party);
+            // console.log("ADDING THIS PARTY" + party);
             this.addParty(user, party);
         }
 
@@ -382,9 +382,9 @@ class Appointment
 
     makeSerializable()
     {
-        console.log(this.parties);
+        // console.log(this.parties);
         let appointment = new Appointment(this.user, this.place, this.parties, this.startDate.toJSON(), this.endDate.toJSON(), this.description);
-        console.log(appointment.parties);
+        // console.log(appointment.parties);
         appointment.user = this.user.getUserName();
         return appointment;
 
@@ -886,8 +886,34 @@ function downloadAppointments(user)
         .then((snapshot) =>
         {
             let appointments = snapshot.val();
+            // console.log(appointments);
 
-            console.log(appointments);
+            setApps = new Map();
+
+            for(let count in appointments)
+            {
+                // console.log("AN APPOINTMENT ==================");
+                // console.log(appointments[count].appointmentID);
+                // console.log("END APPOINTMENT==================");
+
+                let appointment = appointments[count];
+
+                getUserFromMap(appointment.user)
+                    .then((user)=>
+                    {
+                        let newAppt = new Appointment(user, appointment.place, appointment.parties, appointment.startDate, appointment.endDate, appointment.description);
+                        setApps.set(newAppt.appointmentID, newAppt);
+
+                        // console.log("HAPPENING")
+
+                        // console.log(newAppt.appointmentID);
+                    })
+                    .catch();
+
+
+            }
+
+            console.log("SOMETHING HERE");
         });
 
     //Download parties for this appointment
