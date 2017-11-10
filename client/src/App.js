@@ -133,7 +133,7 @@ class App extends Component
         }
         else if (this.state.view === "postappointment")
         {
-            alert("Changing")
+            // alert("Changing")
             return (
                 <div>
                     <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
