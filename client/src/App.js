@@ -234,6 +234,7 @@ class AllAppointmentsFor extends Component
             .then((retrievedAppointments) =>
             {
                 console.log(retrievedAppointments);
+
                 this.setState({fetched: true, appointments: retrievedAppointments});
             })
             .catch((error) =>
@@ -249,27 +250,34 @@ class AllAppointmentsFor extends Component
         if (this.state.fetched)
         {
             let rows = [];
-            let index =0;
-            for(let app of this.state.appointments)
-            {
-                console.log("app in this.state.appointments: "+app);
-                rows[index]=app;
-            }
 
+            let index =1;
+            let n=4;
+            for(let i=index;i<=n;i++)
+            rows.push(<tr key={i} ><td>{"test entry #"+i}</td></tr>)
+            //this all just makes an example table based on n inputs
+
+            console.log("ARRAY");
+            console.log(this.state.appointments);
+        // rows = ["test entry"];
+        //     let i =0;    //counter to track inside for of loop
+        // for(let app of this.state.appointments)
+        // {
+        //         i++;
+        //     console.log("app in this.state.appointments: "+app);
+        //     rows.push(<tr key={i} ><td>{app}</td></tr>)
+
+        // }
             return (
-                <div className="container">
-                    <h1>Appointments Table</h1>
-                    <div className="row">
-                        <div className="col s12 board">
-                            <table id="simple-board">
-                                <tbody>
-                                {rows}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            )
+            <div>
+                <h1>Appointments Table</h1>
+            <table id="simple-board">
+            <tbody>
+            {rows}
+            </tbody>
+            </table>
+            </div>
+        );
         }
         else
         {
@@ -291,19 +299,74 @@ class AppointmentsForMonth extends Component
         this.state = {fetched: false};
     }
 
-    componentDidMount()
-    {
-
-        this.setState({fetched: true});
-    }
+    //all same code as from AllAppointmentsFor with just the month being right in the for of in render
+    // componentDidMount()
+    // {
+    //     //fetch appointments for the current user
+    //     fetch('users/' + this.props.user.username + '/appointments')
+    //         .then((response) =>
+    //         {
+    //             return response.json();
+    //         })
+    //         .then((retrievedAppointments) =>
+    //         {
+    //             console.log(retrievedAppointments);
+    //
+    //             this.setState({fetched: true, appointments: retrievedAppointments});
+    //         })
+    //         .catch((error) =>
+    //         {
+    //             alert(error);
+    //         });
+    //
+    //     this.setState({fetched: true});
+    // }
 
     render()
     {
-        return (
-            <div>
+        if (this.state.fetched)
+        {
+            let rows = [];
 
-            </div>
-        );
+            let index =1;
+            let n=4;
+            for(let i=index;i<=n;i++)
+                rows.push(<tr key={i} ><td>{"test entry #"+i}</td></tr>)
+            //this all just makes an example table based on n inputs
+
+            console.log("ARRAY");
+            console.log(this.state.appointments);
+            // rows = ["test entry"];
+            //     let i =0;        //counter to track inside for of loop
+            // for(let app of this.state.appointments)
+            // {
+            //         if(app.month==*testmonth*)          ***************THIS CHECKING FOR CORRECT MONTH
+            //         {
+            //          i++;
+            //     console.log("app in this.state.appointments: "+app);
+            //     rows.push(<tr key={i} ><td>{app}</td></tr>)
+            //          }
+
+            // }
+            return (
+                <div>
+                    <h1>Appointments Table</h1>
+                    <table id="simple-board">
+                        <tbody>
+                        {rows}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+        else
+        {
+            return (
+                <div>
+                    <h1>Content Was Not Fetched from Server. Please Refresh the Page.</h1>
+                </div>
+            )
+        }
     }
 }
 
@@ -312,6 +375,21 @@ class PostAppointment extends Component
     constructor(props)
     {
         super(props);
+        this.user = props.user;
+    }
+
+    createAppointment()
+    {
+        let appointment =
+            {
+                "user":this.user,
+                "place":this.refs.place.value,
+                "parties":[],
+                "startDate":"2017-10-16",
+                "endDate":"2017-10-18",
+                "description":"meetings"
+            };
+
     }
 
     render()
@@ -328,27 +406,27 @@ class PostAppointment extends Component
                     <ul style="list-style: none;" class="list-group">
                         <li>
                             <label for="inputPlace">Place</label>
-                            <input type="text" id="inputPlace" class="form-control" placeholder="Place" required autofocus/>
+                            <input ref="placeField" type="text" id="inputPlace" class="form-control" placeholder="Place" required autofocus/>
                                 <br/>
                         </li>
                         <li>
                             <label for="inputParties" >Parties</label>
-                            <input type="text" id="inputParties" class="form-control" placeholder="user1, user2, user3..." required/>
+                            <input ref="partiesField"type="text" id="inputParties" class="form-control" placeholder="user1, user2, user3..." required/>
                                 <br/>
                         </li>
                         <li>
                             <label for="inputStartDate" >Start Date</label>
-                            <input type="datetime-local" id="inputStartDate" class="form-control" required/>
+                            <input ref="sDate" type="datetime-local" id="inputStartDate" class="form-control" required/>
                                 <br/>
                         </li>
                         <li>
                             <label for="inputEndDate" >End Date</label>
-                            <input type="datetime-local" id="inputEndDate" class="form-control" required/>
+                            <input ref="eDate" type="datetime-local" id="inputEndDate" class="form-control" required/>
                                 <br/>
                         </li>
                         <li>
-                            <label for="inputDescription" >End Date</label>
-                            <input type="text" id="inputDescription" class="form-control" placeholder="Birthday" required/>
+                            <label for="inputDescription" >Description</label>
+                            <input ref="des" type="text" id="inputDescription" class="form-control" placeholder="Birthday" required/>
                                 <br/>
                         </li>
                     </ul>
