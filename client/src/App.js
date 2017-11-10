@@ -67,6 +67,11 @@ class App extends Component
         this.setState({view: "allappointments"});
     }
 
+    changeToPostAppointment()
+    {
+        this.setState({view: "postappointment"});
+    }
+
     render()
     {
         if (this.state.view === "home")
@@ -84,7 +89,8 @@ class App extends Component
                     <HomeScreen toUsers={() => this.changeToUsersScreen()}
                                 toLogin={() => this.changeToLogin()}
                                 toAllAppointments={() => this.changeToAllAppointments()}
-                                toProfile={() => this.changeToProfile()}/>
+                                toProfile={() => this.changeToProfile()}
+                                toAddApp={() => this.changeToPostAppointment()}/>
                 </div>
             );
         }
@@ -125,8 +131,9 @@ class App extends Component
                 </div>
             );
         }
-        else if (this.state.view === "postpointment")
+        else if (this.state.view === "postappointment")
         {
+            alert("Changing")
             return (
                 <div>
                     <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
@@ -296,18 +303,55 @@ class PostAppointment extends Component
         this.user = props.user;
     }
 
+    grabAppointmentFromForm()
+    {
+        this.parseParties();
+        let ap = this.createAppointment();
+        this.sendAppointment(ap);
+    }
+
+    sendAppointment(ap)
+    {
+        //	Send	data	to	remote	service
+        fetch("users/" + this.user.username + "/appointments",
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify(ap)
+            })
+            .then(function (res)
+            {
+                console.log(res)
+            })
+            .catch(function (res)
+            {
+                console.log(res)
+            });
+    }
+
     createAppointment()
     {
         let appointment =
             {
-                "user":this.user,
-                "place":this.refs.place.value,
-                "parties":[],
-                "startDate":"2017-10-16",
-                "endDate":"2017-10-18",
-                "description":"meetings"
+                "user": this.user,
+                "place": this.refs.placeField.value,
+                "parties": [],
+                "startDate": this.refs.sDate.value,
+                "endDate": this.refs.eDate.value,
+                "description": this.refs.des.value
             };
 
+        return appointment;
+
+    }
+
+    parseParties()
+    {
+        let pString = this.refs.partiesField.value;
+        pString = pString.trim().replace(/ /g, "");
+        return pString.split(',');
     }
 
     render()
@@ -321,43 +365,44 @@ class PostAppointment extends Component
                             Please enter the following data to create an appointment.
                         </p>
                     </strong>
-                    <ul style="list-style: none;" class="list-group">
+
+                    <ul class="list-group">
                         <li>
                             <label for="inputPlace">Place</label>
-                            <input ref="placeField" type="text" id="inputPlace" class="form-control" placeholder="Place" required autofocus/>
-                                <br/>
+                            <input ref="placeField" type="text" id="inputPlace" class="form-control" placeholder="Place"
+                                   required autofocus/>
+                            <br/>
                         </li>
                         <li>
-                            <label for="inputParties" >Parties</label>
-                            <input ref="partiesField"type="text" id="inputParties" class="form-control" placeholder="user1, user2, user3..." required/>
-                                <br/>
+                            <label for="inputParties">Parties</label>
+                            <input ref="partiesField" type="text" id="inputParties" class="form-control"
+                                   placeholder="user1, user2, user3..." required/>
+                            <br/>
                         </li>
                         <li>
-                            <label for="inputStartDate" >Start Date</label>
+                            <label for="inputStartDate">Start Date</label>
                             <input ref="sDate" type="datetime-local" id="inputStartDate" class="form-control" required/>
-                                <br/>
+                            <br/>
                         </li>
                         <li>
-                            <label for="inputEndDate" >End Date</label>
+                            <label for="inputEndDate">End Date</label>
                             <input ref="eDate" type="datetime-local" id="inputEndDate" class="form-control" required/>
-                                <br/>
+                            <br/>
                         </li>
                         <li>
-                            <label for="inputDescription" >Description</label>
-                            <input ref="des" type="text" id="inputDescription" class="form-control" placeholder="Birthday" required/>
-                                <br/>
+                            <label for="inputDescription">Description</label>
+                            <input ref="des" type="text" id="inputDescription" class="form-control"
+                                   placeholder="Birthday" required/>
+                            <br/>
                         </li>
                     </ul>
 
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" value="remember-me"> Remember me</input>
-                        </label>
-                    </div>
                     <br/>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Add Appointment</button>
+                    <button class="btn btn-lg btn-primary btn-block" onClick={() => this.grabAppointmentFromForm()}
+                            type="submit">Add Appointment
+                    </button>
                 </form>
-
+                <p>Something</p>
             </div>
         );
     }
@@ -650,6 +695,9 @@ class HomeScreen extends Component
                             </li>
                             <li class="nav-item active">
                                 <a class="nav-link" href="#" onClick={this.props.toProfile}>Profile</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#" onClick={this.props.toAddApp}>Add Appointment</a>
                             </li>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
