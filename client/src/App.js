@@ -125,6 +125,17 @@ class App extends Component
                 </div>
             );
         }
+        else if (this.state.view === "postpointment")
+        {
+            return (
+                <div>
+                    <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
+                    <PostAppointment user={this.state.user}/>
+                    <br/>
+                </div>
+            );
+        }
+
     }
 }
 
@@ -239,7 +250,7 @@ class AllAppointmentsFor extends Component
         {
             let rows = [];
 
-            for(let app of this.appointments)
+            for(let app of this.state.appointments)
             {
 
             }
@@ -297,7 +308,6 @@ class PostAppointment extends Component
     {
         return (
             <div class="container">
-                <!--This input data form will be styled by bootstrap-->
                 <form class="form-group">
                     <h2 class="form-signin-heading">Add a New Appointment</h2>
                     <strong>
@@ -308,7 +318,6 @@ class PostAppointment extends Component
                     <ul style="list-style: none;" class="list-group">
                         <li>
                             <label for="inputPlace">Place</label>
-                            <!--user, place, parties, startDate, endDate, description-->
                             <input type="text" id="inputPlace" class="form-control" placeholder="Place" required autofocus/>
                                 <br/>
                         </li>
@@ -339,7 +348,7 @@ class PostAppointment extends Component
                             <input type="checkbox" value="remember-me"> Remember me</input>
                         </label>
                     </div>
-                    <br>
+                    <br/>
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Add Appointment</button>
                 </form>
 
