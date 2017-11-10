@@ -291,18 +291,57 @@ class PostAppointment extends Component
     constructor(props)
     {
         super(props);
-        this.state = {fetched: false};
-    }
-
-    componentDidMount()
-    {
-        this.setState({fetched: true});
     }
 
     render()
     {
         return (
-            <div>
+            <div class="container">
+                <!--This input data form will be styled by bootstrap-->
+                <form class="form-group">
+                    <h2 class="form-signin-heading">Add a New Appointment</h2>
+                    <strong>
+                        <p>
+                            Please enter the following data to create an appointment.
+                        </p>
+                    </strong>
+                    <ul style="list-style: none;" class="list-group">
+                        <li>
+                            <label for="inputPlace">Place</label>
+                            <!--user, place, parties, startDate, endDate, description-->
+                            <input type="text" id="inputPlace" class="form-control" placeholder="Place" required autofocus/>
+                                <br/>
+                        </li>
+                        <li>
+                            <label for="inputParties" >Parties</label>
+                            <input type="text" id="inputParties" class="form-control" placeholder="user1, user2, user3..." required/>
+                                <br/>
+                        </li>
+                        <li>
+                            <label for="inputStartDate" >Start Date</label>
+                            <input type="datetime-local" id="inputStartDate" class="form-control" required/>
+                                <br/>
+                        </li>
+                        <li>
+                            <label for="inputEndDate" >End Date</label>
+                            <input type="datetime-local" id="inputEndDate" class="form-control" required/>
+                                <br/>
+                        </li>
+                        <li>
+                            <label for="inputDescription" >End Date</label>
+                            <input type="text" id="inputDescription" class="form-control" placeholder="Birthday" required/>
+                                <br/>
+                        </li>
+                    </ul>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me</input>
+                        </label>
+                    </div>
+                    <br>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Add Appointment</button>
+                </form>
 
             </div>
         );
