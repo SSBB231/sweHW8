@@ -240,7 +240,8 @@ class AllAppointmentsFor extends Component
             })
             .then((retrievedAppointments) =>
             {
-                // console.log(retrievedAppointments);
+                console.log(retrievedAppointments);
+
                 this.setState({fetched: true, appointments: retrievedAppointments});
             })
             .catch((error) =>
@@ -255,9 +256,35 @@ class AllAppointmentsFor extends Component
     {
         if (this.state.fetched)
         {
+            let rows = [];
+
+            let index =1;
+            let n=4;
+            for(let i=index;i<=n;i++)
+            rows.push(<tr key={i} ><td>{"test entry #"+i}</td></tr>)
+            //this all just makes an example table based on n inputs
+
             console.log("ARRAY");
             console.log(this.state.appointments);
-            return (<div></div>);
+        // rows = ["test entry"];
+        //     let i =0;    //counter to track inside for of loop
+        // for(let app of this.state.appointments)
+        // {
+        //         i++;
+        //     console.log("app in this.state.appointments: "+app);
+        //     rows.push(<tr key={i} ><td>{app}</td></tr>)
+
+        // }
+            return (
+            <div>
+                <h1>Appointments Table</h1>
+            <table id="simple-board">
+            <tbody>
+            {rows}
+            </tbody>
+            </table>
+            </div>
+        );
         }
         else
         {
@@ -279,19 +306,74 @@ class AppointmentsForMonth extends Component
         this.state = {fetched: false};
     }
 
-    componentDidMount()
-    {
-
-        this.setState({fetched: true});
-    }
+    //all same code as from AllAppointmentsFor with just the month being right in the for of in render
+    // componentDidMount()
+    // {
+    //     //fetch appointments for the current user
+    //     fetch('users/' + this.props.user.username + '/appointments')
+    //         .then((response) =>
+    //         {
+    //             return response.json();
+    //         })
+    //         .then((retrievedAppointments) =>
+    //         {
+    //             console.log(retrievedAppointments);
+    //
+    //             this.setState({fetched: true, appointments: retrievedAppointments});
+    //         })
+    //         .catch((error) =>
+    //         {
+    //             alert(error);
+    //         });
+    //
+    //     this.setState({fetched: true});
+    // }
 
     render()
     {
-        return (
-            <div>
+        if (this.state.fetched)
+        {
+            let rows = [];
 
-            </div>
-        );
+            let index =1;
+            let n=4;
+            for(let i=index;i<=n;i++)
+                rows.push(<tr key={i} ><td>{"test entry #"+i}</td></tr>)
+            //this all just makes an example table based on n inputs
+
+            console.log("ARRAY");
+            console.log(this.state.appointments);
+            // rows = ["test entry"];
+            //     let i =0;        //counter to track inside for of loop
+            // for(let app of this.state.appointments)
+            // {
+            //         if(app.month==*testmonth*)          ***************THIS CHECKING FOR CORRECT MONTH
+            //         {
+            //          i++;
+            //     console.log("app in this.state.appointments: "+app);
+            //     rows.push(<tr key={i} ><td>{app}</td></tr>)
+            //          }
+
+            // }
+            return (
+                <div>
+                    <h1>Appointments Table</h1>
+                    <table id="simple-board">
+                        <tbody>
+                        {rows}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+        else
+        {
+            return (
+                <div>
+                    <h1>Content Was Not Fetched from Server. Please Refresh the Page.</h1>
+                </div>
+            )
+        }
     }
 }
 
