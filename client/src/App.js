@@ -238,10 +238,11 @@ class AllAppointmentsFor extends Component
         if (this.state.fetched)
         {
             let rows = [];
-
-            for(let app of this.appointments)
+            let index =0;
+            for(let app of this.state.appointments)
             {
-
+                console.log("app in this.state.appointments: "+app);
+                rows[index]=app;
             }
 
             return (
