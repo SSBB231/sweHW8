@@ -233,8 +233,8 @@ class AllAppointmentsFor extends Component
             })
             .then((retrievedAppointments) =>
             {
-                console.log(retrievedAppointments);
-                this.setState({fetched: true, apppointments: retrievedAppointments});
+                // console.log(retrievedAppointments);
+                this.setState({fetched: true, appointments: retrievedAppointments});
             })
             .catch((error) =>
             {
@@ -248,18 +248,9 @@ class AllAppointmentsFor extends Component
     {
         if (this.state.fetched)
         {
-            let rows = [];
-
-            for(let app of this.state.appointments)
-            {
-
-            }
-
-            return (
-                <div>
-                    <h1>Main Content Here</h1>
-                </div>
-            )
+            console.log("ARRAY");
+            console.log(this.state.appointments);
+            return (<div></div>);
         }
         else
         {
@@ -302,6 +293,21 @@ class PostAppointment extends Component
     constructor(props)
     {
         super(props);
+        this.user = props.user;
+    }
+
+    createAppointment()
+    {
+        let appointment =
+            {
+                "user":this.user,
+                "place":this.refs.place.value,
+                "parties":[],
+                "startDate":"2017-10-16",
+                "endDate":"2017-10-18",
+                "description":"meetings"
+            };
+
     }
 
     render()
@@ -318,27 +324,27 @@ class PostAppointment extends Component
                     <ul style="list-style: none;" class="list-group">
                         <li>
                             <label for="inputPlace">Place</label>
-                            <input type="text" id="inputPlace" class="form-control" placeholder="Place" required autofocus/>
+                            <input ref="placeField" type="text" id="inputPlace" class="form-control" placeholder="Place" required autofocus/>
                                 <br/>
                         </li>
                         <li>
                             <label for="inputParties" >Parties</label>
-                            <input type="text" id="inputParties" class="form-control" placeholder="user1, user2, user3..." required/>
+                            <input ref="partiesField"type="text" id="inputParties" class="form-control" placeholder="user1, user2, user3..." required/>
                                 <br/>
                         </li>
                         <li>
                             <label for="inputStartDate" >Start Date</label>
-                            <input type="datetime-local" id="inputStartDate" class="form-control" required/>
+                            <input ref="sDate" type="datetime-local" id="inputStartDate" class="form-control" required/>
                                 <br/>
                         </li>
                         <li>
                             <label for="inputEndDate" >End Date</label>
-                            <input type="datetime-local" id="inputEndDate" class="form-control" required/>
+                            <input ref="eDate" type="datetime-local" id="inputEndDate" class="form-control" required/>
                                 <br/>
                         </li>
                         <li>
-                            <label for="inputDescription" >End Date</label>
-                            <input type="text" id="inputDescription" class="form-control" placeholder="Birthday" required/>
+                            <label for="inputDescription" >Description</label>
+                            <input ref="des" type="text" id="inputDescription" class="form-control" placeholder="Birthday" required/>
                                 <br/>
                         </li>
                     </ul>
