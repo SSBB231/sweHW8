@@ -78,7 +78,7 @@ class App extends Component
         {
             console.log("RENDERING SOMETHING");
             return (
-                <div class="App">
+                <div className="App">
                     {/*<header className="App-header">*/}
                     {/*<img src={logo} className="App-logo" alt="logo"/>*/}
                     {/*<h1 className="App-title">Failed to Load Homepage</h1>*/}
@@ -97,7 +97,7 @@ class App extends Component
         else if (this.state.view === "users")
         {
             return (
-                <div class="App">
+                <div className="App">
                     <h1>These Are All the App's Registered Users</h1>
                     <AllUsers/>
                     <br/>
@@ -158,29 +158,29 @@ class Profile extends Component
     {
         return (
 
-            <div class="container">
-                <div class="header clearfix">
+            <div className="container">
+                <div className="header clearfix">
                     <nav>
-                        <ul class="nav nav-pills float-right">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="/html/home.html">Home <span
-                                    class="sr-only">(current)</span></a>
+                        <ul className="nav nav-pills float-right">
+                            <li className="nav-item">
+                                <a className="nav-link active" href="/html/home.html">Home <span
+                                    className="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">About</a>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">About</a>
                             </li>
                         </ul>
                     </nav>
-                    <h3 class="text-muted">Profile</h3>
+                    <h3 className="text-muted">Profile</h3>
                 </div>
 
-                <div class="jumbotron-fluid">
+                <div className="jumbotron-fluid">
 
-                    <h1 id="username" class="display-3">Username</h1>
+                    <h1 id="username" className="display-3">Username</h1>
                     <br/>
-                    <div class="row align-self-auto">
+                    <div className="row align-self-auto">
 
-                        <div class="col-lg-4">
+                        <div className="col-lg-4">
                             <h4>Name</h4>
                             <p id="name">{this.user.name}</p>
 
@@ -188,7 +188,7 @@ class Profile extends Component
                             <p id="email">{this.user.email}</p>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div className="col-lg-6">
                             <h4>Last Name</h4>
                             <p id="lastName">{this.user.lastName}</p>
                         </div>
@@ -198,7 +198,7 @@ class Profile extends Component
                     <br/>
                     <h4>Friends</h4>
                     <div>
-                        <table id="friends" class="table table-hover">
+                        <table id="friends" className="table table-hover">
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -213,7 +213,7 @@ class Profile extends Component
                 </div>
 
 
-                <footer class="footer">
+                <footer className="footer">
                     <p>&copy; utuezi 2017</p>
                 </footer>
             </div>
@@ -455,48 +455,48 @@ class PostAppointment extends Component
     render()
     {
         return (
-            <div class="container">
-                <form class="form-group">
-                    <h2 class="form-signin-heading">Add a New Appointment</h2>
+            <div className="container">
+                <form className="form-group">
+                    <h2 className="form-signin-heading">Add a New Appointment</h2>
                     <strong>
                         <p>
                             Please enter the following data to create an appointment.
                         </p>
                     </strong>
 
-                    <ul class="list-group">
+                    <ul className="list-group">
                         <li>
                             <label for="inputPlace">Place</label>
-                            <input ref="placeField" type="text" id="inputPlace" class="form-control" placeholder="Place"
+                            <input ref="placeField" type="text" id="inputPlace" className="form-control" placeholder="Place"
                                    required autofocus/>
                             <br/>
                         </li>
                         <li>
                             <label for="inputParties">Parties</label>
-                            <input ref="partiesField" type="text" id="inputParties" class="form-control"
+                            <input ref="partiesField" type="text" id="inputParties" className="form-control"
                                    placeholder="user1, user2, user3..." required/>
                             <br/>
                         </li>
                         <li>
                             <label for="inputStartDate">Start Date</label>
-                            <input ref="sDate" type="datetime-local" id="inputStartDate" class="form-control" required/>
+                            <input ref="sDate" type="datetime-local" id="inputStartDate" className="form-control" required/>
                             <br/>
                         </li>
                         <li>
                             <label for="inputEndDate">End Date</label>
-                            <input ref="eDate" type="datetime-local" id="inputEndDate" class="form-control" required/>
+                            <input ref="eDate" type="datetime-local" id="inputEndDate" className="form-control" required/>
                             <br/>
                         </li>
                         <li>
                             <label for="inputDescription">Description</label>
-                            <input ref="des" type="text" id="inputDescription" class="form-control"
+                            <input ref="des" type="text" id="inputDescription" className="form-control"
                                    placeholder="Birthday" required/>
                             <br/>
                         </li>
                     </ul>
 
                     <br/>
-                    <button class="btn btn-lg btn-primary btn-block" onClick={() => this.grabAppointmentFromForm()}
+                    <button className="btn btn-lg btn-primary btn-block" onClick={() => this.grabAppointmentFromForm()}
                             type="submit">Add Appointment
                     </button>
                 </form>
@@ -526,55 +526,55 @@ class Login extends Component
         return (
             <div>
                 <button onClick={this.props.toHome}>Go Back to Homescreen</button>
-                <div class="container">
+                <div className="container">
 
-                    <div class="header clearfix">
+                    <div className="header clearfix">
                         <nav id="mainNavBar">
-                            <ul class="nav nav-pills float-right">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                            <ul className="nav nav-pills float-right">
+                                <li className="nav-item">
+                                    <a className="nav-link active" href="#">Home <span className="sr-only">(current)</span></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Appointments</a>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#">Appointments</a>
                                 </li>
                             </ul>
                         </nav>
-                        <h3 class="text-muted">utuezi</h3>
+                        <h3 className="text-muted">utuezi</h3>
                     </div>
 
                     <main role="main">
-                        <section class="signup">
-                            <div class="jumbotron-fluid">
-                                <h1 class="display-3">Sign Up</h1>
-                                <p class="lead">Wanna manage your appointments like a pro? Sign up today to gain full
+                        <section className="signup">
+                            <div className="jumbotron-fluid">
+                                <h1 className="display-3">Sign Up</h1>
+                                <p className="lead">Wanna manage your appointments like a pro? Sign up today to gain full
                                     access to our appointment manager service!</p>
-                                <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign Up</a></p>
+                                <p><a className="btn btn-lg btn-primary" href="#" role="button">Sign Up</a></p>
                             </div>
                         </section>
 
                         <hr/>
                         <br/>
 
-                        <section class="login">
+                        <section className="login">
                             <div>
-                                <h2 class="alert-light" align="center">Already have an account?</h2>
+                                <h2 className="alert-light" align="center">Already have an account?</h2>
                             </div>
 
-                            <div class="container">
-                                <form class="form-signin">
-                                    <h2 class="form-signin-heading">Please sign in</h2>
-                                    <label for="inputEmail" class="sr-only">Email address</label>
-                                    <input type="email" id="inputEmail" class="form-control"
+                            <div className="container">
+                                <form className="form-signin">
+                                    <h2 className="form-signin-heading">Please sign in</h2>
+                                    <label for="inputEmail" className="sr-only">Email address</label>
+                                    <input type="email" id="inputEmail" className="form-control"
                                            placeholder="Email address" required autofocus/>
-                                    <label for="inputPassword" class="sr-only">Password</label>
-                                    <input type="password" id="inputPassword" class="form-control"
+                                    <label for="inputPassword" className="sr-only">Password</label>
+                                    <input type="password" id="inputPassword" className="form-control"
                                            placeholder="Password" required/>
-                                    <div class="checkbox">
+                                    <div className="checkbox">
                                         <label>
                                             <input type="checkbox" value="remember-me"/> Remember me
                                         </label>
                                     </div>
-                                    <button class="btn btn-lg btn-outline-success btn-block" type="submit">Sign in
+                                    <button className="btn btn-lg btn-outline-success btn-block" type="submit">Sign in
                                     </button>
                                 </form>
                             </div>
@@ -582,7 +582,7 @@ class Login extends Component
                     </main>
 
                     <br/>
-                    <footer class="footer">
+                    <footer className="footer">
                         <p>&copy; utuezi 2017</p>
                     </footer>
 
@@ -767,47 +767,47 @@ class HomeScreen extends Component
     {
         return (
             <div>
-                <nav class="navbar navbar-toggleable-md navbar-inverse bg-success fixed-top">
-                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                <nav className="navbar navbar-toggleable-md navbar-inverse bg-success fixed-top">
+                    <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                             data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
                             aria-expanded="false"
                             aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                        <span className="navbar-toggler-icon"></span>
                     </button>
-                    <a class="navbar-brand" href="#">utuezi</a>
+                    <a className="navbar-brand" href="#">utuezi</a>
 
-                    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+                    <div className="collapse navbar-collapse" id="navbarsExampleDefault">
+                        <ul className="navbar-nav mr-auto">
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#">Home<span className="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#" onClick={this.props.toUsers}>Users<span
-                                    class="sr-only">(current)</span></a>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toUsers}>Users<span
+                                    className="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#" onClick={this.props.toLogin}>Log In</a>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toLogin}>Log In</a>
                             </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#" onClick={this.props.toAllAppointments}>Appointments</a>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toAllAppointments}>Appointments</a>
                             </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#" onClick={this.props.toProfile}>Profile</a>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toProfile}>Profile</a>
                             </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#" onClick={this.props.toAddApp}>Add Appointment</a>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toAddApp}>Add Appointment</a>
                             </li>
                         </ul>
-                        <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="text" placeholder="Search by Month"/>
-                            <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+                        <form className="form-inline my-2 my-lg-0">
+                            <input className="form-control mr-sm-2" type="text" placeholder="Search by Month"/>
+                            <button className="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
                         </form>
                     </div>
                 </nav>
 
-                <div class="container">
+                <div className="container">
 
-                    <div class="starter-template">
+                    <div className="starter-template">
                         <h1>Welcome to utuezi!</h1>
                         <br/>
                         <br/>
