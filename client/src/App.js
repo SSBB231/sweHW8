@@ -106,7 +106,7 @@ class App extends Component
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
                                 toAddApp={() => this.changeToPostAppointment()}/>
-                    <h1>These Are All the App's Registered Users</h1>
+                    <h1 className={"text-center"}>These Are All the App's Registered Users</h1>
                     <AllUsers/>
                     <br/>
                 </div>
@@ -374,7 +374,7 @@ class AllAppointmentsFor extends Component
             return (
                 <div>
                     <h1>Appointments Table</h1>
-                    <table id="simple-board">
+                    <table id="simple-board" className="table table-hover">
                         <tbody>
                         {rows}
                         </tbody>
@@ -456,7 +456,7 @@ class AppointmentsForMonth extends Component
             return (
                 <div>
                     <h1>Appointments Table</h1>
-                    <table id="simple-board">
+                    <table id="simple-board" className="table table-hover">
                         <tbody>
                         {rows}
                         </tbody>
@@ -609,20 +609,6 @@ class Login extends Component
             <div>
                 <div className="container">
 
-                    <div className="header clearfix">
-                        <nav id="mainNavBar">
-                            <ul className="nav nav-pills float-right">
-                                <li className="nav-item">
-                                    <a className="nav-link active" href="#">Home <span className="sr-only">(current)</span></a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">Appointments</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <h3 className="text-muted">Appointinator</h3>
-                    </div>
-
                     <main role="main">
                         <section className="signup">
                             <div className="jumbotron-fluid">
@@ -740,7 +726,7 @@ class CelinesAppointments extends Component
             <div className="container">
                 <div className="row">
                     <div className="col s12 board">
-                        <table id="simple-board">
+                        <table id="simple-board" className="table table-hover">
                             <tbody>
                             {rows}
                             </tbody>
@@ -819,7 +805,7 @@ class AllUsers extends Component
             <div className="container">
                 <div className="row">
                     <div className="col s12 board">
-                        <table id="simple-board">
+                        <table id="simple-board" className="table table-hover">
                             <tbody>
                             {rows}
                             </tbody>
