@@ -86,11 +86,12 @@ class App extends Component
                     {/*<p className="App-intro">*/}
                     {/*To get started, edit <code>src/App.js</code> and save to reload.*/}
                     {/*</p>*/}
-                    <HomeScreen toUsers={() => this.changeToUsersScreen()}
+					<NavBar toUsers={() => this.changeToUsersScreen()}
                                 toLogin={() => this.changeToLogin()}
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
                                 toAddApp={() => this.changeToPostAppointment()}/>
+                    <HomeScreen/>
                 </div>
             );
         }
@@ -98,6 +99,11 @@ class App extends Component
         {
             return (
                 <div className="App">
+				<NavBar toUsers={() => this.changeToUsersScreen()}
+                                toLogin={() => this.changeToLogin()}
+                                toAllAppointments={() => this.changeToAllAppointments()}
+                                toProfile={() => this.changeToProfile()}
+                                toAddApp={() => this.changeToPostAppointment()}/>
                     <h1>These Are All the App's Registered Users</h1>
                     <AllUsers/>
                     <br/>
@@ -108,13 +114,25 @@ class App extends Component
         else if (this.state.view === "login")
         {
             return (
+				<div>
+				<NavBar toUsers={() => this.changeToUsersScreen()}
+                                toLogin={() => this.changeToLogin()}
+                                toAllAppointments={() => this.changeToAllAppointments()}
+                                toProfile={() => this.changeToProfile()}
+                                toAddApp={() => this.changeToPostAppointment()}/>
                 <Login toHome={() => this.changeToHomeScreen()}/>
+				</div>
             )
         }
         else if (this.state.view === "allappointments")
         {
             return (
                 <div>
+					<NavBar toUsers={() => this.changeToUsersScreen()}
+                                toLogin={() => this.changeToLogin()}
+                                toAllAppointments={() => this.changeToAllAppointments()}
+                                toProfile={() => this.changeToProfile()}
+                                toAddApp={() => this.changeToPostAppointment()}/>
                     <AllAppointmentsFor user={this.state.user}/>
                     <br/>
                     <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
@@ -125,6 +143,11 @@ class App extends Component
         {
             return (
                 <div>
+					<NavBar toUsers={() => this.changeToUsersScreen()}
+                                toLogin={() => this.changeToLogin()}
+                                toAllAppointments={() => this.changeToAllAppointments()}
+                                toProfile={() => this.changeToProfile()}
+                                toAddApp={() => this.changeToPostAppointment()}/>
                     <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
                     <Profile user={this.state.user}/>
                     <br/>
@@ -136,6 +159,11 @@ class App extends Component
             // alert("Changing")
             return (
                 <div>
+					<NavBar toUsers={() => this.changeToUsersScreen()}
+                                toLogin={() => this.changeToLogin()}
+                                toAllAppointments={() => this.changeToAllAppointments()}
+                                toProfile={() => this.changeToProfile()}
+                                toAddApp={() => this.changeToPostAppointment()}/>
                     <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
                     <PostAppointment user={this.state.user}/>
                     <br/>
@@ -144,6 +172,58 @@ class App extends Component
         }
 
     }
+}
+
+class NavBar extends Component
+{
+	constructor(props)
+    {
+        super(props);
+		this.state = {currentView: this.props.viewID};
+    }
+
+	render()
+	{
+		return (
+		<nav className="navbar navbar-toggleable-md navbar-inverse bg-success fixed-top">
+                    <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <a className="navbar-brand" href="#">utuezi</a>
+
+                    <div className="collapse navbar-collapse" id="navbarsExampleDefault">
+                        <ul className="navbar-nav mr-auto">
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#">Home<span className="sr-only">(current)</span></a>
+                            </li>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toUsers}>Users<span
+                                    className="sr-only">(current)</span></a>
+                            </li>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toLogin}>Log In</a>
+                            </li>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toAllAppointments}>Appointments</a>
+                            </li>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toProfile}>Profile</a>
+                            </li>
+                            <li className="nav-item active">
+                                <a className="nav-link" href="#" onClick={this.props.toAddApp}>Add Appointment</a>
+                            </li>
+                        </ul>
+                        <form className="form-inline my-2 my-lg-0">
+                            <input className="form-control mr-sm-2" type="text" placeholder="Search by Month"/>
+                            <button className="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+                </nav>
+			);
+	}
 }
 
 class Profile extends Component
@@ -767,48 +847,9 @@ class HomeScreen extends Component
     {
         return (
             <div>
-                <nav className="navbar navbar-toggleable-md navbar-inverse bg-success fixed-top">
-                    <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <a className="navbar-brand" href="#">utuezi</a>
-
-                    <div className="collapse navbar-collapse" id="navbarsExampleDefault">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#">Home<span className="sr-only">(current)</span></a>
-                            </li>
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#" onClick={this.props.toUsers}>Users<span
-                                    className="sr-only">(current)</span></a>
-                            </li>
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#" onClick={this.props.toLogin}>Log In</a>
-                            </li>
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#" onClick={this.props.toAllAppointments}>Appointments</a>
-                            </li>
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#" onClick={this.props.toProfile}>Profile</a>
-                            </li>
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#" onClick={this.props.toAddApp}>Add Appointment</a>
-                            </li>
-                        </ul>
-                        <form className="form-inline my-2 my-lg-0">
-                            <input className="form-control mr-sm-2" type="text" placeholder="Search by Month"/>
-                            <button className="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                    </div>
-                </nav>
-
                 <div className="container">
-
                     <div className="starter-template">
-                        <h1>Welcome to utuezi!</h1>
+                        <h1>Welcome to Appoint-O!</h1>
                         <br/>
                         <br/>
                     </div>
