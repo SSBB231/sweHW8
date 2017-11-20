@@ -242,23 +242,12 @@ class Profile extends Component
 
             <div className="container">
                 <div className="header clearfix">
-                    <nav>
-                        <ul className="nav nav-pills float-right">
-                            <li className="nav-item">
-                                <a className="nav-link active" href="/html/home.html">Home <span
-                                    className="sr-only">(current)</span></a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">About</a>
-                            </li>
-                        </ul>
-                    </nav>
                     <h3 className="text-muted">Profile</h3>
                 </div>
 
                 <div className="jumbotron-fluid">
 
-                    <h1 id="username" className="display-3">Username</h1>
+                    <h1 id="username" className="display-3">{this.user.username}</h1>
                     <br/>
                     <div className="row align-self-auto">
 
@@ -280,7 +269,7 @@ class Profile extends Component
                     <br/>
                     <h4>Friends</h4>
                     <div>
-                        <table id="friends" className="table table-hover">
+                        <table ref="friends" className="table table-striped table-hover">
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -374,7 +363,7 @@ class AllAppointmentsFor extends Component
             return (
                 <div>
                     <h1>Appointments Table</h1>
-                    <table id="simple-board" className="table table-hover">
+                    <table id="simple-board" className="table table-hover table-striped">
                         <tbody>
                         {rows}
                         </tbody>
@@ -386,7 +375,7 @@ class AllAppointmentsFor extends Component
         {
             return (
                 <div>
-                    <h1>Content Was Not Fetched from Server. Please Refresh the Page.</h1>
+                    <h3 className={"text-center"}>Content Was Not Fetched from Server. Please Refresh the Page.</h3>
                 </div>
             )
         }
@@ -456,7 +445,7 @@ class AppointmentsForMonth extends Component
             return (
                 <div>
                     <h1>Appointments Table</h1>
-                    <table id="simple-board" className="table table-hover">
+                    <table id="simple-board" className="table table-hover table-striped">
                         <tbody>
                         {rows}
                         </tbody>
@@ -726,7 +715,7 @@ class CelinesAppointments extends Component
             <div className="container">
                 <div className="row">
                     <div className="col s12 board">
-                        <table id="simple-board" className="table table-hover">
+                        <table id="simple-board" className="table table-hover table-striped">
                             <tbody>
                             {rows}
                             </tbody>
@@ -805,7 +794,7 @@ class AllUsers extends Component
             <div className="container">
                 <div className="row">
                     <div className="col s12 board">
-                        <table id="simple-board" className="table table-hover">
+                        <table id="simple-board" className="table table-hover table-striped">
                             <tbody>
                             {rows}
                             </tbody>
