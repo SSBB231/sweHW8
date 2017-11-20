@@ -192,7 +192,7 @@ class NavBar extends Component
                             aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <a className="navbar-brand" href="#">utuezi</a>
+                    <a className="navbar-brand" href="#">Appoint-O!</a>
 
                     <div className="collapse navbar-collapse" id="navbarsExampleDefault">
                         <ul className="navbar-nav mr-auto">
@@ -294,7 +294,7 @@ class Profile extends Component
 
 
                 <footer className="footer">
-                    <p>&copy; utuezi 2017</p>
+                    <p>&copy; Appoint-O! 2017</p>
                 </footer>
             </div>
         )
@@ -619,7 +619,7 @@ class Login extends Component
                                 </li>
                             </ul>
                         </nav>
-                        <h3 className="text-muted">utuezi</h3>
+                        <h3 className="text-muted">Appoint-O!</h3>
                     </div>
 
                     <main role="main">
@@ -663,7 +663,7 @@ class Login extends Component
 
                     <br/>
                     <footer className="footer">
-                        <p>&copy; utuezi 2017</p>
+                        <p>&copy; Appoint-O! 2017</p>
                     </footer>
 
                 </div>
