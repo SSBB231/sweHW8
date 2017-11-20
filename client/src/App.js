@@ -735,7 +735,7 @@ class AllUsers extends Component
     {
         super(props);
 
-        this.state = {size: 2}
+        this.state = {size: 2, fetched: false}
         this.userarray = [];
         //let firstnames userarray.map((firstname
         this.firstnames = [1, 2, 3];
@@ -746,25 +746,28 @@ class AllUsers extends Component
     componentDidMount()
     {
 
-        fetch('/users/')
-            .then(response =>
-            {
-                return response.json();
-            })
-            .then((json) =>
-            {
-                this.userarray = json;
-                console.log(this.userarray);
-                this.firstnames = this.userarray.map((user) => user.name);
-                this.lastnames = this.userarray.map((user) => user.lastName);
+        if(this.state !== true)
+        {
+            fetch('/users/')
+                .then(response =>
+                {
+                    return response.json();
+                })
+                .then((json) =>
+                {
+                    this.userarray = json;
+                    console.log(this.userarray);
+                    this.firstnames = this.userarray.map((user) => user.name);
+                    this.lastnames = this.userarray.map((user) => user.lastName);
 
-                this.arrayemails = this.userarray.map((user) => user.email);
-                this.setState({fetched: "true"});
-            })
-            .catch(error =>
-            {
-                console.log(error);
-            });
+                    this.arrayemails = this.userarray.map((user) => user.email);
+                    this.setState({fetched: true});
+                })
+                .catch(error =>
+                {
+                    console.log(error);
+                });
+        }
 
     }
 
