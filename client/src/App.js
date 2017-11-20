@@ -86,7 +86,8 @@ class App extends Component
                     {/*<p className="App-intro">*/}
                     {/*To get started, edit <code>src/App.js</code> and save to reload.*/}
                     {/*</p>*/}
-					<NavBar toUsers={() => this.changeToUsersScreen()}
+                    <NavBar     toHome={() => this.changeToHomeScreen()}
+                                toUsers={() => this.changeToUsersScreen()}
                                 toLogin={() => this.changeToLogin()}
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
@@ -99,7 +100,8 @@ class App extends Component
         {
             return (
                 <div className="App">
-				<NavBar toUsers={() => this.changeToUsersScreen()}
+                    <NavBar     toHome={() => this.changeToHomeScreen()}
+                                toUsers={() => this.changeToUsersScreen()}
                                 toLogin={() => this.changeToLogin()}
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
@@ -107,7 +109,6 @@ class App extends Component
                     <h1>These Are All the App's Registered Users</h1>
                     <AllUsers/>
                     <br/>
-                    <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
                 </div>
             );
         }
@@ -115,7 +116,8 @@ class App extends Component
         {
             return (
 				<div>
-				<NavBar toUsers={() => this.changeToUsersScreen()}
+                    <NavBar     toHome={() => this.changeToHomeScreen()}
+                                toUsers={() => this.changeToUsersScreen()}
                                 toLogin={() => this.changeToLogin()}
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
@@ -128,14 +130,14 @@ class App extends Component
         {
             return (
                 <div>
-					<NavBar toUsers={() => this.changeToUsersScreen()}
+                    <NavBar     toHome={() => this.changeToHomeScreen()}
+                                toUsers={() => this.changeToUsersScreen()}
                                 toLogin={() => this.changeToLogin()}
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
                                 toAddApp={() => this.changeToPostAppointment()}/>
                     <AllAppointmentsFor user={this.state.user}/>
                     <br/>
-                    <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
                 </div>
             );
         }
@@ -143,12 +145,12 @@ class App extends Component
         {
             return (
                 <div>
-					<NavBar toUsers={() => this.changeToUsersScreen()}
+                    <NavBar     toHome={() => this.changeToHomeScreen()}
+                                toUsers={() => this.changeToUsersScreen()}
                                 toLogin={() => this.changeToLogin()}
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
                                 toAddApp={() => this.changeToPostAppointment()}/>
-                    <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
                     <Profile user={this.state.user}/>
                     <br/>
                 </div>
@@ -159,12 +161,12 @@ class App extends Component
             // alert("Changing")
             return (
                 <div>
-					<NavBar toUsers={() => this.changeToUsersScreen()}
+					<NavBar     toHome={() => this.changeToHomeScreen()}
+                                toUsers={() => this.changeToUsersScreen()}
                                 toLogin={() => this.changeToLogin()}
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
                                 toAddApp={() => this.changeToPostAppointment()}/>
-                    <button onClick={() => this.changeToHomeScreen()}>Go Back to Homescreen</button>
                     <PostAppointment user={this.state.user}/>
                     <br/>
                 </div>
@@ -197,7 +199,7 @@ class NavBar extends Component
                     <div className="collapse navbar-collapse" id="navbarsExampleDefault">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item active">
-                                <a className="nav-link" href="#">Home<span className="sr-only">(current)</span></a>
+                                <a className="nav-link" href="#" onClick={this.props.toHome}>Home<span className="sr-only">(current)</span></a>
                             </li>
                             <li className="nav-item active">
                                 <a className="nav-link" href="#" onClick={this.props.toUsers}>Users<span
@@ -605,7 +607,6 @@ class Login extends Component
     {
         return (
             <div>
-                <button onClick={this.props.toHome}>Go Back to Homescreen</button>
                 <div className="container">
 
                     <div className="header clearfix">
@@ -850,6 +851,8 @@ class HomeScreen extends Component
                 <div className="container">
                     <div className="starter-template">
                         <h1>Welcome to Appointinator</h1>
+                        <p>Any similarity with Doofenshmirtz's naming conventions is mere coincidence.</p>
+                        <img src={require('./checklist.png')}/>
                         <br/>
                         <br/>
                     </div>
