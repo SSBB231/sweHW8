@@ -852,7 +852,7 @@ class HomeScreen extends Component
                     <div className="starter-template">
                         <h1>Welcome to Appointinator</h1>
                         <p>Any similarity with Doofenshmirtz's naming conventions is mere coincidence.</p>
-                        <img src={require('./checklist.png')}/>
+                        <img src={require('./appointment.png')}/>
                         <br/>
                         <br/>
                     </div>
