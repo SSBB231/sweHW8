@@ -742,7 +742,7 @@ class AllFriends extends Component
     componentDidMount()
     {
         //fetch appointments for the current user
-        fetch('users/' + this.props.user.username + '/friends')
+        fetch('/users/' + this.props.user.username + '/friends')
             .then((response) =>
             {
                 return response.json();
