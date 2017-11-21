@@ -76,7 +76,8 @@ class App extends Component
     {
         if (this.state.view === "home")
         {
-            console.log("RENDERING SOMETHING");
+            //alert('Fetching');
+            // console.log("RENDERING SOMETHING");
             return (
                 <div className="App">
                     {/*<header className="App-header">*/}
@@ -361,21 +362,22 @@ class AllAppointmentsFor extends Component
 
             // }
             return (
-                <div>
-                    <h1>Appointments Table</h1>
+                <div className={"container"}>
+                    <h1 className={"text-center"}>Appointments Table</h1>
                     <table id="simple-board" className="table table-hover table-striped">
                         <tbody>
                         {rows}
                         </tbody>
                     </table>
                 </div>
+
             );
         }
         else
         {
             return (
                 <div>
-                    <h3 className={"text-center"}>Content Was Not Fetched from Server. Please Refresh the Page.</h3>
+                    <h3 className={"text-center"}>Please wait one moment while we load your appointments</h3>
                 </div>
             )
         }
@@ -571,7 +573,29 @@ class PostAppointment extends Component
                             type="submit">Add Appointment
                     </button>
                 </form>
-                <p>Something</p>
+
+                <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+                <div id="myModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+
+                        {/*<!-- Modal content-->*/}
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                <h4 className="modal-title">Modal Header</h4>
+                            </div>
+                            <div className="modal-body">
+                                <p>Some text in the modal.</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         );
     }
