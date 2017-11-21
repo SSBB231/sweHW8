@@ -168,7 +168,7 @@ class App extends Component
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
                                 toAddApp={() => this.changeToPostAppointment()}/>
-                    <PostAppointment user={this.state.user}/>
+                    <PostAppointment user={this.state.user} goHome={()=>this.changeToHomeScreen()}/>
                     <br/>
                 </div>
             );
@@ -473,15 +473,30 @@ class PostAppointment extends Component
     {
         super(props);
         this.user = props.user;
+        this.friends = [];
     }
 
     grabAppointmentFromForm()
     {
+        this.setPartiesField();
         this.parseParties();
         let ap = this.createAppointment();
         this.sendAppointment(ap);
         alert("The appointment has been added to your calendar");
+        this.props.goHome();
         //I tried to get it to reroute back to the home after adding but I couldn't get it to work properly
+    }
+
+    addFriendToPartiesField(friend)
+    {
+        if(this.refs.partiesField.value === "")
+        {
+            this.refs.partiesField.value = friend;
+        }
+        else
+        {
+            this.refs.partiesField.value = this.refs.partiesField.value + ", " + friend;
+        }
     }
 
     sendAppointment(ap)
@@ -532,51 +547,59 @@ class PostAppointment extends Component
     {
         return (
             <div className="container">
-                <form className="form-group">
-                    <h2 className="form-signin-heading">Add a New Appointment</h2>
-                    <strong>
-                        <p>
-                            Please enter the following data to create an appointment.
-                        </p>
-                    </strong>
+                <table>
+                    <tr>
+                        <td>
+                            <form className="form-group">
+                                <h2 className="form-signin-heading">Add a New Appointment</h2>
+                                <strong>
+                                    <p>
+                                        Please enter the following data to create an appointment.
+                                    </p>
+                                </strong>
 
-                    <ul className="list-group">
-                        <li>
-                            <label for="inputPlace">Place</label>
-                            <input ref="placeField" type="text" id="inputPlace" className="form-control" placeholder="Place"
-                                   required autofocus/>
-                            <br/>
-                        </li>
-                        <li>
-                            <label for="inputParties">Parties</label>
-                            <input ref="partiesField" type="text" id="inputParties" className="form-control"
-                                   onClick={()=>{}} placeholder="Click to open and select friends" required/>
-                            <br/>
-                        </li>
-                        <li>
-                            <label for="inputStartDate">Start Date</label>
-                            <input ref="sDate" type="datetime-local" id="inputStartDate" className="form-control" required/>
-                            <br/>
-                        </li>
-                        <li>
-                            <label for="inputEndDate">End Date</label>
-                            <input ref="eDate" type="datetime-local" id="inputEndDate" className="form-control" required/>
-                            <br/>
-                        </li>
-                        <li>
-                            <label for="inputDescription">Description</label>
-                            <input ref="des" type="text" id="inputDescription" className="form-control"
-                                   placeholder="Birthday" required/>
-                            <br/>
-                        </li>
-                    </ul>
+                                <ul className="list-group">
+                                    <li>
+                                        <label for="inputPlace">Place</label>
+                                        <input ref="placeField" type="text" id="inputPlace" className="form-control" placeholder="Place"
+                                               required autofocus/>
+                                        <br/>
+                                    </li>
+                                    <li>
+                                        <label for="inputParties">Parties</label>
+                                        <input ref="partiesField" type="text" id="inputParties" className="form-control"
+                                               placeholder="Select friends from table or enter them directly" required/>
+                                        <br/>
+                                    </li>
+                                    <li>
+                                        <label for="inputStartDate">Start Date</label>
+                                        <input ref="sDate" type="datetime-local" id="inputStartDate" className="form-control" required/>
+                                        <br/>
+                                    </li>
+                                    <li>
+                                        <label for="inputEndDate">End Date</label>
+                                        <input ref="eDate" type="datetime-local" id="inputEndDate" className="form-control" required/>
+                                        <br/>
+                                    </li>
+                                    <li>
+                                        <label for="inputDescription">Description</label>
+                                        <input ref="des" type="text" id="inputDescription" className="form-control"
+                                               placeholder="Birthday" required/>
+                                        <br/>
+                                    </li>
+                                </ul>
 
-                    <br/>
-                    <button className="btn btn-lg btn-primary btn-block" onClick={() => this.grabAppointmentFromForm()}
-                            type="submit">Add Appointment
-                    </button>
-                </form>
-                <AllFriends user={this.user}/>
+                                <br/>
+                                <button className="btn btn-lg btn-primary btn-block" onClick={() => this.grabAppointmentFromForm()}
+                                        type="submit">Add Appointment
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <AllFriends user={this.user} rowHandle={(friend)=>{this.addFriendToPartiesField(friend)}}/>
+                        </td>
+                    </tr>
+                </table>
             </div>
         );
     }
@@ -774,17 +797,13 @@ class AllFriends extends Component
 
             let index = 0;
             let n = 3;
-            for (let i = index; i <= n; i++)
+            for (let i = index; i < n; i++)
             {
                 let row = [];
-                for (let element in friends[i])
-                {
-                    row.push(<div>{friends[i][element].toString()}</div>);
-                }
+                row.push(<div>{friends[i]}</div>);
                 rows.push(
-                    <tr  key={i}>
-                        <td>{row}<br/>
-                            <br/></td>
+                    <tr  key={i} onClick={()=>this.props.rowHandle(friends[i])}>
+                        <td>{row}</td>
                     </tr>);
             }
             //this all just makes an example table based on n inputs
@@ -803,7 +822,7 @@ class AllFriends extends Component
             return (
                 <div className={"container"}>
                     <h1 className={"text-center"}>Friends Table</h1>
-                    <table id="simple-board" className="table table-hover table-striped">
+                    <table id="simple-board" ref={"firendsTable"} className="table table-hover table-striped">
                         <tbody>
                         {rows}
                         </tbody>

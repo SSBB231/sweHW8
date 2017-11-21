@@ -839,13 +839,13 @@ router.route('/users/:username/friends/:friendID')
     });
 
 
-router.route('/users/:username/friends')
+router.route('/users/:username/friends/')
     .get((req, res)=>
     {
         getUserFromMap(req.params.username)
             .then((retrieved) =>
             {
-                return JSON.stringify(retrieved.makeSerializable().getFriendUIDS());
+                res.send(JSON.stringify(retrieved.makeSerializable().getFriendUIDS()));
             })
             .catch((error) =>
             {
