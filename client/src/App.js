@@ -490,7 +490,7 @@ class PostAppointment extends Component
     {
         if(this.refs.partiesField.value.includes(friend))
             return;
-        
+
         if(this.refs.partiesField.value === "")
         {
             this.refs.partiesField.value = friend;
@@ -823,7 +823,7 @@ class AllFriends extends Component
             // }
             return (
                 <div className={"container"}>
-                    <h1 className={"text-center"}>Friends Table</h1>
+                    <h1 className={"text-center"}>Friends</h1>
                     <table id="simple-board" ref={"firendsTable"} className="table table-hover table-striped">
                         <tbody>
                         {rows}
