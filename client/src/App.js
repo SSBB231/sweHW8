@@ -478,9 +478,8 @@ class PostAppointment extends Component
 
     grabAppointmentFromForm()
     {
-        this.setPartiesField();
-        this.parseParties();
         let ap = this.createAppointment();
+        ap.parties = this.parseParties();
         this.sendAppointment(ap);
         alert("The appointment has been added to your calendar");
         this.props.goHome();
