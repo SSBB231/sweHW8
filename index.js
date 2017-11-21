@@ -838,6 +838,21 @@ router.route('/users/:username/friends/:friendID')
             });
     });
 
+
+router.route('/users/:username/friends')
+    .get((req, res)=>
+    {
+        getUserFromMap(req.params.username)
+            .then((retrieved) =>
+            {
+                return JSON.stringify(retrieved.makeSerializable().getFriendUIDS());
+            })
+            .catch((error) =>
+            {
+                res.send(error);
+            });
+    });
+
 //================================================================================================
 
 

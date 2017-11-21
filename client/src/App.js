@@ -384,6 +384,7 @@ class AllAppointmentsFor extends Component
     }
 }
 
+
 //Component to Render All Appointments for User in Given Month
 class AppointmentsForMonth extends Component
 {
@@ -547,7 +548,7 @@ class PostAppointment extends Component
                         <li>
                             <label for="inputParties">Parties</label>
                             <input ref="partiesField" type="text" id="inputParties" className="form-control"
-                                   placeholder="user1, user2, user3..." required/>
+                                   onClick={()=>{}} placeholder="Click to open and select friends" required/>
                             <br/>
                         </li>
                         <li>
@@ -573,29 +574,7 @@ class PostAppointment extends Component
                             type="submit">Add Appointment
                     </button>
                 </form>
-
-                <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-
-                <div id="myModal" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-
-                        {/*<!-- Modal content-->*/}
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <h4 className="modal-title">Modal Header</h4>
-                            </div>
-                            <div className="modal-body">
-                                <p>Some text in the modal.</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
+                <AllFriends user={this.user}/>
             </div>
         );
     }
@@ -749,6 +728,96 @@ class CelinesAppointments extends Component
             </div>
         )
 
+    }
+}
+
+class AllFriends extends Component
+{
+    constructor(props)
+    {
+        super(props);
+        this.state = {fetched: false, friends: null};
+    }
+
+    componentDidMount()
+    {
+        //fetch appointments for the current user
+        fetch('users/' + this.props.user.username + '/friends')
+            .then((response) =>
+            {
+                return response.json();
+            })
+            .then((retrievedFriends) =>
+            {
+                console.log(retrievedFriends);
+
+                this.setState({fetched: true, friends: retrievedFriends});
+            })
+            .catch((error) =>
+            {
+                alert(error);
+            });
+    }
+
+    render()
+    {
+        if (this.state.fetched === true)
+        {
+            let rows = [];
+            let friends = this.state.friends;
+
+            console.log("THIS I WILL USE");
+            console.log(friends);
+            console.log(friends[0]);
+
+            let index = 0;
+            let n = 3;
+            for (let i = index; i <= n; i++)
+            {
+                let row = [];
+                for (let element in friends[i])
+                {
+                    row.push(<div>{friends[i][element].toString()}</div>);
+                }
+                rows.push(
+                    <tr  key={i}>
+                        <td>{row}<br/>
+                            <br/></td>
+                    </tr>);
+            }
+            //this all just makes an example table based on n inputs
+
+            console.log("ARRAY");
+            console.log(this.state.friends);
+            // rows = ["test entry"];
+            //     let i =0;    //counter to track inside for of loop
+            // for(let app of this.state.friends)
+            // {
+            //         i++;
+            //     console.log("app in this.state.friends: "+app);
+            //     rows.push(<tr key={i} ><td>{app}</td></tr>)
+
+            // }
+            return (
+                <div className={"container"}>
+                    <h1 className={"text-center"}>Friends Table</h1>
+                    <table id="simple-board" className="table table-hover table-striped">
+                        <tbody>
+                        {rows}
+                        </tbody>
+                    </table>
+                </div>
+
+            );
+        }
+        else
+        {
+            return (
+                <div>
+                    <h3 className={"text-center"}>Please wait one moment while we load your friends</h3>
+                </div>
+            )
+        }
     }
 }
 
