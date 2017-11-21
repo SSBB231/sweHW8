@@ -480,6 +480,8 @@ class PostAppointment extends Component
         this.parseParties();
         let ap = this.createAppointment();
         this.sendAppointment(ap);
+        alert("The appointment has been added to your calendar");
+        //I tried to get it to reroute back to the home after adding but I couldn't get it to work properly
     }
 
     sendAppointment(ap)
