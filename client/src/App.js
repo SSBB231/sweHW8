@@ -488,6 +488,9 @@ class PostAppointment extends Component
 
     addFriendToPartiesField(friend)
     {
+        if(this.refs.partiesField.value.includes(friend))
+            return;
+        
         if(this.refs.partiesField.value === "")
         {
             this.refs.partiesField.value = friend;
@@ -567,7 +570,7 @@ class PostAppointment extends Component
                                     <li>
                                         <label for="inputParties">Parties</label>
                                         <input ref="partiesField" type="text" id="inputParties" className="form-control"
-                                               placeholder="Select friends from table or enter them directly" required/>
+                                               placeholder="Click on Friends on Table" required/>
                                         <br/>
                                     </li>
                                     <li>
