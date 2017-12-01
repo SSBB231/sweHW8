@@ -605,7 +605,7 @@ class PostAppointment extends Component
                                 </ul>
 
                                 <br/>
-                                <button className="btn btn-lg btn-primary btn-outline-primary" onClick={() => this.grabAppointmentFromForm()}
+                                <button className="btn btn-lg btn-warning" onClick={() => this.grabAppointmentFromForm()}
                                         type="submit">Add Appointment
                                 </button>
                             </form>
