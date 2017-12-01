@@ -1,0 +1,23 @@
+ul
+{
+    list-style: none;
+}
+
+.myMarginator
+{
+    margin-left: 20%;
+}
+
+.myTable td
+{
+    vertical-align: top;
+}
+
+.myCol
+{
+    column-width: 200pt;
+}
+
+.friendsTable tr {
+    cursor: pointer;
+}

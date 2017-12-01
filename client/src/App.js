@@ -243,15 +243,13 @@ class Profile extends Component
 
             <div className="container">
                 <div className="header clearfix">
-                    <h3 className="text-muted">Profile</h3>
+                    <h1 id="username">{this.user.username}</h1>
+                    {/*<h3 className="text-muted">Profile</h3>*/}
                 </div>
 
                 <div className="jumbotron-fluid">
 
-                    <h1 id="username" className="display-3">{this.user.username}</h1>
-                    <br/>
                     <div className="row align-self-auto">
-
                         <div className="col-lg-4">
                             <h4>Name</h4>
                             <p id="name">{this.user.name}</p>
@@ -259,7 +257,6 @@ class Profile extends Component
                             <h4>Email</h4>
                             <p id="email">{this.user.email}</p>
                         </div>
-
                         <div className="col-lg-6">
                             <h4>Last Name</h4>
                             <p id="lastName">{this.user.lastName}</p>
@@ -270,7 +267,7 @@ class Profile extends Component
                     <br/>
                     <h4>Friends</h4>
                     <div>
-                        <table ref="friends" className="table table-striped table-hover">
+                        <table ref="friends" className={"table table-striped table-hover"}>
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -489,7 +486,22 @@ class PostAppointment extends Component
     addFriendToPartiesField(friend)
     {
         if(this.refs.partiesField.value.includes(friend))
+        {
+            if(this.refs.partiesField.value.includes(friend+", "))
+            {
+                this.refs.partiesField.value = this.refs.partiesField.value.replace(friend+", ", "");
+            }
+            else if(this.refs.partiesField.value.includes(", "+friend))
+            {
+                this.refs.partiesField.value = this.refs.partiesField.value.replace(", "+friend, "");
+            }
+            else if(this.refs.partiesField.value.includes(friend))
+            {
+                this.refs.partiesField.value = this.refs.partiesField.value.replace(friend, "");
+            }
+
             return;
+        }
 
         if(this.refs.partiesField.value === "")
         {
@@ -548,29 +560,30 @@ class PostAppointment extends Component
     render()
     {
         return (
-            <div className="container">
-                <table>
+            <div className={"myMarginator"}>
+                <h2 className="form-signin-heading">Add a New Appointment</h2>
+                <strong>
+                    <p>
+                        Please enter the following data to create an appointment.
+                    </p>
+                </strong>
+                <table className={"myTable"}>
                     <tr>
-                        <td>
+                        <td width={700}>
                             <form className="form-group">
-                                <h2 className="form-signin-heading">Add a New Appointment</h2>
-                                <strong>
-                                    <p>
-                                        Please enter the following data to create an appointment.
-                                    </p>
-                                </strong>
 
-                                <ul className="list-group">
-                                    <li>
-                                        <label for="inputPlace">Place</label>
-                                        <input ref="placeField" type="text" id="inputPlace" className="form-control" placeholder="Place"
-                                               required autofocus/>
-                                        <br/>
-                                    </li>
+
+                                <ul  className="list-group">
                                     <li>
                                         <label for="inputParties">Parties</label>
                                         <input ref="partiesField" type="text" id="inputParties" className="form-control"
                                                placeholder="Click on Friends on Table" required/>
+                                        <br/>
+                                    </li>
+                                    <li>
+                                        <label for="inputPlace">Place</label>
+                                        <input ref="placeField" type="text" id="inputPlace" className="form-control" placeholder="Place"
+                                               required autofocus/>
                                         <br/>
                                     </li>
                                     <li>
@@ -592,12 +605,12 @@ class PostAppointment extends Component
                                 </ul>
 
                                 <br/>
-                                <button className="btn btn-lg btn-primary btn-block" onClick={() => this.grabAppointmentFromForm()}
+                                <button className="btn btn-lg btn-primary btn-outline-primary" onClick={() => this.grabAppointmentFromForm()}
                                         type="submit">Add Appointment
                                 </button>
                             </form>
                         </td>
-                        <td>
+                        <td className={"myCol"}>
                             <AllFriends user={this.user} rowHandle={(friend)=>{this.addFriendToPartiesField(friend)}}/>
                         </td>
                     </tr>
@@ -805,7 +818,7 @@ class AllFriends extends Component
                 row.push(<div>{friends[i]}</div>);
                 rows.push(
                     <tr  key={i} onClick={()=>this.props.rowHandle(friends[i])}>
-                        <td>{row}</td>
+                        <td className={"text-center"}>{row}</td>
                     </tr>);
             }
             //this all just makes an example table based on n inputs
@@ -823,8 +836,9 @@ class AllFriends extends Component
             // }
             return (
                 <div className={"container"}>
-                    <h1 className={"text-center"}>Friends</h1>
-                    <table id="simple-board" ref={"firendsTable"} className="table table-hover table-striped">
+                    <h3>Friends</h3>
+                    <table id="simple-board" ref={"firendsTable"} className="friendsTable table-hover table-striped">
+                        <col width={200}/>
                         <tbody>
                         {rows}
                         </tbody>
