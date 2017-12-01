@@ -195,15 +195,15 @@ class NavBar extends Component
                             aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <a className="navbar-brand" href="#">Appointinator</a>
+                    <button className="btn btn-warning" href="#" onClick={this.props.toHome}>Appointinator</button>
 
                     <div className="collapse navbar-collapse" id="navbarsExampleDefault">
                         <ul className="navbar-nav mr-auto">
+                            {/*<li className="nav-item active">*/}
+                                {/*<a className="nav-link" href="#" onClick={this.props.toHome}>Home<span className="sr-only">(current)</span></a>*/}
+                            {/*</li>*/}
                             <li className="nav-item active">
-                                <a className="nav-link" href="#" onClick={this.props.toHome}>Home<span className="sr-only">(current)</span></a>
-                            </li>
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#" onClick={this.props.toUsers}>Users<span
+                                <a className="nav-link " href="#" onClick={this.props.toUsers}>Users<span
                                     className="sr-only">(current)</span></a>
                             </li>
                             <li className="nav-item active">
