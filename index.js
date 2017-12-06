@@ -396,7 +396,7 @@ class Appointment
     {
         // console.log(this.parties);
         let appointment = new Appointment(this.user, this.place, this.parties, this.startDate.toJSON(), this.endDate.toJSON(), this.description);
-        // console.log(appointment.parties);
+        console.log(appointment.parties);
         appointment.user = this.user.getUserName();
         return appointment;
 
@@ -601,6 +601,7 @@ router.route('/users/:username/appointments/')
             })
             .catch((message) =>
             {
+                console.log("NOT EXIST");
                 res.send("USER DOES NOT EXIST" + message);
             });
     })
@@ -625,8 +626,10 @@ router.route('/users/:username/appointments/')
                     })
                     .catch((error) =>
                     {
-                        let newAppointment = new Appointment(user, req.body.place, ["monica", "eric"], sDate, eDate, req.body.description);
-                        console.log(JSON.stringify(newAppointment));
+                        console.log("PARTIES FROM BODY: "+ req.body.parties instanceof Array);
+
+                        let newAppointment = new Appointment(user, req.body.place, req.body.parties, sDate, eDate, req.body.description);
+                        console.log(JSON.stringify(newAppointment.makeSerializable()));
                         user.addAppointment(newAppointment);
                         res.send(error + "\nCreating New Appointment.");
                     });
@@ -750,7 +753,10 @@ router.route('/users/:username/')
             .then((retrieved) =>
             {
                 if(retrieved.comparePasswords(req.body.password))
+                {
+                    console.log("SENDING CORRECT USER");
                     res.send(JSON.stringify(retrieved.makeSerializable()));
+                }
                 else
                 {
                     let noUser = {
@@ -761,7 +767,7 @@ router.route('/users/:username/')
                         "friendUIDS":[],
                         "appointments":[],
                         "password":"NOUSER"
-                        };
+                    };
                     res.send(JSON.stringify(noUser));
                 }
             })
@@ -925,16 +931,19 @@ function downloadAppointments()
 
                 for(let count in apps)
                 {
-                    // console.log("AN APPOINTMENT ==================");
-                    // console.log(appointments[count].appointmentID);
-                    // console.log("END APPOINTMENT==================");
+                    console.log("AN APPOINTMENT ==================");
+                    console.log(apps[count].appointmentID);
+                    console.log("END APPOINTMENT==================");
 
                     let appointment = apps[count];
                     let newUser = users.get(appointment.user);
                     console.log(newUser.getUserName());
+                    console.log("FIRST: ");
+
                     let newAppt = new Appointment(newUser, appointment.place, appointment.parties, new Date(appointment.startDate), new Date(appointment.endDate), appointment.description);
+
                     appointments.push(newAppt);
-                    console.log(newAppt.appointmentID);
+                    console.log("HERE: "+newAppt.appointmentID);
                 }
 
                 console.log()
@@ -958,7 +967,7 @@ function downloadFriends(user)
 
             if (friends !== null)
             {
-                // console.log("These are the friends I downloaded: " + friends);
+                console.log("These are the friends I downloaded: " + friends);
                 for (let i in friends)
                 {
                     // console.log("Friend: " + friends[i]);
@@ -986,11 +995,11 @@ function downloadDataFromFireBase()
                 let newUser = new User(user.name, user.lastName, user.username, user.email, user.password);
                 downloadFriends(newUser);
 
-                for(let app of appointments)
-                {
-                    if(app.user===newUser.getUserName())
-                        console.log(app);
-                }
+                // for(let app of appointments)
+                // {
+                //     if(app.user===newUser.getUserName())
+                //         console.log(app);
+                // }
                 //console.log(user);
                 users.set(user.username, newUser);
             }

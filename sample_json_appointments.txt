@@ -1,7 +1,7 @@
 {
 	"user":"cdione",
 	"place":"Hawaii",
-	"parties":"{monica, eric}",
+	"parties":["mchahin", "jimmy"],
 	"startDate":"2017-10-16",
 	"endDate":"2017-10-18",
 	"description":"meetings"

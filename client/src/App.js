@@ -122,7 +122,7 @@ class App extends Component
                                 toAllAppointments={() => this.changeToAllAppointments()}
                                 toProfile={() => this.changeToProfile()}
                                 toAddApp={() => this.changeToPostAppointment()}/>
-                <Login toHome={() => this.changeToHomeScreen()}/>
+                <Login updateUser={(user)=>this.updateUser(user)} toHome={() => this.changeToHomeScreen()}/>
 				</div>
             )
         }
@@ -173,6 +173,12 @@ class App extends Component
             );
         }
 
+    }
+
+    updateUser(newUser)
+    {
+        this.setState({user: newUser});
+        this.changeToProfile();
     }
 }
 
@@ -307,6 +313,7 @@ class AllAppointmentsFor extends Component
     {
         // alert("Fetching Stuff");
         //fetch appointments for the current user
+        console.log("THIS IS THE USERNAME I'M SEARCHING: "+this.props.user.username);
         fetch('users/' + this.props.user.username + '/appointments')
             .then((response) =>
             {
@@ -314,6 +321,7 @@ class AllAppointmentsFor extends Component
             })
             .then((retrievedAppointments) =>
             {
+                console.log("RETRIEVED APPOINTMENTS");
                 console.log(retrievedAppointments);
 
                 this.setState({fetched: true, appointments: retrievedAppointments});
@@ -563,7 +571,14 @@ class PostAppointment extends Component
     {
         let pString = this.refs.partiesField.value;
         pString = pString.trim().replace(/ /g, "");
-        return pString.split(',');
+        if(pString.includes(","))
+        {
+            return pString.split(',');
+        }
+        else
+        {
+            return [pString];
+        }
     }
 
     render()
@@ -638,23 +653,54 @@ class Login extends Component
 
     logIn()
     {
-        //Grab user info
-        let loginInfo = this.pullInfoFromLogin();
-
-        //TODO: fetch call with promises
-        //TODO: call updateUser that will be passed in from parent component within then
+        this.pullInfoFromLogin()
+            .then((loginInfo)=>
+            {
+                fetch("users/" + loginInfo.email.substring(0, loginInfo.email.indexOf("@")) + "/",
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        method: "POST",
+                        body: JSON.stringify(loginInfo)
+                    })
+                    .then(function (res)
+                    {
+                        return res.json();
+                    })
+                    .then((user)=>
+                    {
+                        alert("LOGGED IN AS: " + user.username);
+                        this.props.updateUser(user);
+                    })
+                    .catch(function (res)
+                    {
+                        alert(res);
+                    });
+            })
+            .catch((error)=>alert(error));
     }
 
     pullInfoFromLogin()
     {
-        let loginInfo = {};
+        return new Promise((resolve, reject)=>
+        {
+            let loginInfo = {};
 
-        loginInfo.email = this.refs.emailInput.value;
-        loginInfo.password = this.refs.passwordInput.value;
+            loginInfo.email = this.refs.emailInput.value;
+            loginInfo.password = this.refs.passwordInput.value;
 
-        // alert(`FETCHED VALS:\nemail: ${loginInfo.email}\npassword: ${loginInfo.password}`);
+            // alert(`FETCHED VALS:\nemail: ${loginInfo.email}\npassword: ${loginInfo.password}`);
 
-        return loginInfo;
+            if(loginInfo.email !== null && loginInfo.password !== null)
+            {
+                resolve(loginInfo);
+            }
+            else
+            {
+                reject("FAILED TO GRAB STUFF FOR LOGIN");
+            }
+        });
     }
 
     componentDidMount()
@@ -686,7 +732,7 @@ class Login extends Component
                             {/*</div>*/}
 
                             <div className="container">
-                                <form className="form-signin" onSubmit={()=>this.pullInfoFromLogin()}>
+                                <form className="form-signin" onSubmit={()=>this.logIn()}>
                                     <h2 className="form-signin-heading">Please sign in</h2>
                                     <br/>
 
@@ -906,7 +952,7 @@ class AllUsers extends Component
     componentDidMount()
     {
 
-        if(this.state !== true)
+        if(this.state.fetched !== true)
         {
             fetch('/users/')
                 .then(response =>
@@ -921,6 +967,12 @@ class AllUsers extends Component
                     this.lastnames = this.userarray.map((user) => user.lastName);
 
                     this.arrayemails = this.userarray.map((user) => user.email);
+
+                    // console.log(this.firstnames);
+                    // console.log(this.lastnames);
+                    // console.log(this.arrayemails);
+
+
                     this.setState({fetched: true});
                 })
                 .catch(error =>
@@ -935,12 +987,12 @@ class AllUsers extends Component
     {
         let rows = [];
         let count = 0;
-        for (var i = 0; i < this.userarray.length / 2; i++)
+        for (var i = 0; i < this.userarray.length/2; i++)
         {
             let rowID = `row${i}`
             let cell = []
 
-            for (var idx = 0; idx < 2; idx++)
+            for (let idx = 0; idx < 2; idx++)
             {
                 let cellID = `cell${i}-${idx}`
                 if (count % 2 == 0)
@@ -949,6 +1001,7 @@ class AllUsers extends Component
                     cell.push(<td key={cellID} id={cellID}>{this.arrayemails[count - 1]}</td>)
 
                 count++;
+                console.log("DIS DA NAMES")
                 console.log(this.firstnames);
             }
             rows.push(<tr key={i} id={rowID}>{cell}</tr>)
