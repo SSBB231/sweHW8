@@ -12,25 +12,6 @@ class App extends Component
         this.state = {view: "home", user: null};
     }
 
-    logIn()
-    {
-        //pull info from fields in login screen
-    }
-
-    pullInfoFromLogin()
-    {
-        let loginInfo = {};
-
-        loginInfo.email = this.refs.emailInput.value
-        loginInfo.psssword = this.refs.passwordInput.value;
-    }
-
-    fetchUserFromServer(user)
-    {
-
-    }
-
-
     componentDidMount()
     {
         //fetch celine from the user database
@@ -655,6 +636,27 @@ class Login extends Component
         this.state = {fetched: false};
     }
 
+    logIn()
+    {
+        //Grab user info
+        let loginInfo = this.pullInfoFromLogin();
+
+        //TODO: fetch call with promises
+        //TODO: call updateUser that will be passed in from parent component within then
+    }
+
+    pullInfoFromLogin()
+    {
+        let loginInfo = {};
+
+        loginInfo.email = this.refs.emailInput.value;
+        loginInfo.password = this.refs.passwordInput.value;
+
+        // alert(`FETCHED VALS:\nemail: ${loginInfo.email}\npassword: ${loginInfo.password}`);
+
+        return loginInfo;
+    }
+
     componentDidMount()
     {
 
@@ -684,7 +686,7 @@ class Login extends Component
                             {/*</div>*/}
 
                             <div className="container">
-                                <form className="form-signin">
+                                <form className="form-signin" onSubmit={()=>this.pullInfoFromLogin()}>
                                     <h2 className="form-signin-heading">Please sign in</h2>
                                     <br/>
 

@@ -201,7 +201,7 @@ let loadFromFireBase = true;
 //Class Declarations==========================================
 class User
 {
-    constructor(name, lastName, uName, uEmail)
+    constructor(name, lastName, uName, uEmail, password)
     {
         this.username = uName;
         this.name = name;
@@ -209,11 +209,22 @@ class User
         this.email = uEmail;
         this.friendUIDS = new Set();
         this.appointments = new Map();
+        this.password = password;
     }
 
     getName()
     {
         return this.name;
+    }
+
+    comparePasswords(password)
+    {
+        return (this.password === password);
+    }
+
+    setPassword(password)
+    {
+        this.password = password;
     }
 
     getFullName()
@@ -238,7 +249,7 @@ class User
 
     makeSerializable()
     {
-        let newUser = new User(this.getName(), this.getLastName(), this.getUserName(), this.getEmail());
+        let newUser = new User(this.getName(), this.getLastName(), this.getUserName(), this.getEmail(), this.password);
         newUser.friendUIDS = Array.from(this.getFriendUIDS());
         newUser.appointments = Array.from(this.getAppointments());
 
@@ -693,7 +704,7 @@ router.route('/users/')
             })
             .catch((error) =>
             {
-                let newUser = new User(req.body.name, req.body.lastName, req.body.username, req.body.email);
+                let newUser = new User(req.body.name, req.body.lastName, req.body.username, req.body.email, req.body.password);
                 users.set(req.body.username.toLowerCase(), newUser);
                 saveUserToDatabase(newUser.makeSerializable());
                 res.send("Created new user successfully: " + newUser.toString());
@@ -731,6 +742,33 @@ router.route('/users/:username/')
             {
                 res.send(error);
             });
+    })
+    .post((req, res)=>
+    {
+        //This post request will serve to login
+        getUserFromMap(req.params.username)
+            .then((retrieved) =>
+            {
+                if(retrieved.comparePasswords(req.body.password))
+                    res.send(JSON.stringify(retrieved.makeSerializable()));
+                else
+                {
+                    let noUser = {
+                        "username":"NOUSER",
+                        "name":"NOUSER",
+                        "lastName":"NOUSER",
+                        "email":"NOUSER",
+                        "friendUIDS":[],
+                        "appointments":[],
+                        "password":"NOUSER"
+                        };
+                    res.send(JSON.stringify(noUser));
+                }
+            })
+            .catch((error) =>
+            {
+                res.send(error);
+            })
     });
 
 //============================== End of Simple Routing and Deleting ==============================
@@ -945,7 +983,7 @@ function downloadDataFromFireBase()
             for (let element in data)
             {
                 user = data[element];
-                let newUser = new User(user.name, user.lastName, user.username, user.email);
+                let newUser = new User(user.name, user.lastName, user.username, user.email, user.password);
                 downloadFriends(newUser);
 
                 for(let app of appointments)
