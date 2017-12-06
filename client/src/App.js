@@ -12,6 +12,24 @@ class App extends Component
         this.state = {view: "home", user: null};
     }
 
+    logIn()
+    {
+        //pull info from fields in login screen
+    }
+
+    pullInfoFromLogin()
+    {
+        let loginInfo = {};
+
+        loginInfo.email = this.refs.emailInput.value
+        loginInfo.psssword = this.refs.passwordInput.value;
+    }
+
+    fetchUserFromServer(user)
+    {
+
+    }
+
 
     componentDidMount()
     {
@@ -301,6 +319,12 @@ class AllAppointmentsFor extends Component
 
     componentDidMount()
     {
+        this.pullAppointmentsFromServer();
+    }
+
+    pullAppointmentsFromServer()
+    {
+        // alert("Fetching Stuff");
         //fetch appointments for the current user
         fetch('users/' + this.props.user.username + '/appointments')
             .then((response) =>
@@ -331,18 +355,22 @@ class AllAppointmentsFor extends Component
             console.log(appointments[0]);
 
             let index = 0;
-            let n = 3;
-            for (let i = index; i <= n; i++)
+            let n = appointments.length;
+            for (let i = index; i < n; i++)
             {
                 let row = [];
                 for (let element in appointments[i])
                 {
-                    row.push(<div>{appointments[i][element].toString()}</div>);
+                    if(appointments[i][element] === null)
+                        console.log("NULL");
+                    else
+                        row.push(<div>{appointments[i][element].toString()}</div>);
                 }
                 rows.push(
                     <tr  key={i}>
-                        <td>{row}<br/>
-                            <br/></td>
+                        <td>{row}
+                        <br/>
+                        </td>
                     </tr>);
             }
             //this all just makes an example table based on n inputs
@@ -530,7 +558,7 @@ class PostAppointment extends Component
             })
             .catch(function (res)
             {
-                console.log(res)
+                alert(res);
             });
     }
 
@@ -570,9 +598,7 @@ class PostAppointment extends Component
                 <table className={"myTable"}>
                     <tr>
                         <td width={700}>
-                            <form className="form-group">
-
-
+                            <form className="form-group" onSubmit={() => this.grabAppointmentFromForm()}>
                                 <ul  className="list-group">
                                     <li>
                                         <label for="inputParties">Parties</label>
@@ -605,7 +631,7 @@ class PostAppointment extends Component
                                 </ul>
 
                                 <br/>
-                                <button className="btn btn-lg btn-warning" onClick={() => this.grabAppointmentFromForm()}
+                                <button className={"btn btn-lg btn-warning btn-block"}
                                         type="submit">Add Appointment
                                 </button>
                             </form>
@@ -640,41 +666,43 @@ class Login extends Component
         return (
             <div>
                 <div className="container">
-
                     <main role="main">
-                        <section className="signup">
-                            <div className="jumbotron-fluid">
-                                <h1 className="display-3">Sign Up</h1>
-                                <p className="lead">Wanna manage your appointments like a pro? Sign up today to gain full
-                                    access to our appointment manager service!</p>
-                                <p><a className="btn btn-lg btn-primary" href="#" role="button">Sign Up</a></p>
-                            </div>
-                        </section>
+                        {/*<section className="signup">*/}
+                            {/*/!*<div className="jumbotron-fluid">*!/*/}
+                                {/*/!*<h1 className="display-3">Sign Up</h1>*!/*/}
+                                {/*/!*<p className="lead">Wanna manage your appointments like a pro? Sign up today to gain full*!/*/}
+                                    {/*/!*access to our appointment manager service!</p>*!/*/}
+                                {/*/!*<p><a className="btn btn-lg btn-primary" href="#" role="button">Sign Up</a></p>*!/*/}
+                            {/*/!*</div>*!/*/}
+                        {/*</section>*/}
 
-                        <hr/>
-                        <br/>
-
+                        {/*<hr/>*/}
+                        {/*<br/>*/}
                         <section className="login">
-                            <div>
-                                <h2 className="alert-light" align="center">Already have an account?</h2>
-                            </div>
+                            {/*<div>*/}
+                                {/*<h2 className="alert-light" align="center">Already have an account?</h2>*/}
+                            {/*</div>*/}
 
                             <div className="container">
                                 <form className="form-signin">
                                     <h2 className="form-signin-heading">Please sign in</h2>
+                                    <br/>
+
                                     <label for="inputEmail" className="sr-only">Email address</label>
-                                    <input type="email" id="inputEmail" className="form-control"
+                                    <input ref={"emailInput"} type="email" id="inputEmail" className="form-control"
                                            placeholder="Email address" required autofocus/>
+                                    <br/>
                                     <label for="inputPassword" className="sr-only">Password</label>
-                                    <input type="password" id="inputPassword" className="form-control"
+                                    <input ref={"passwordInput"} type="password" id="inputPassword" className="form-control"
                                            placeholder="Password" required/>
-                                    <div className="checkbox">
-                                        <label>
-                                            <input type="checkbox" value="remember-me"/> Remember me
-                                        </label>
-                                    </div>
-                                    <button className="btn btn-lg btn-outline-success btn-block" type="submit">Sign in
-                                    </button>
+                                    {/*<div className="checkbox">*/}
+                                        {/*<label>*/}
+                                            {/*<input type="checkbox" value="remember-me"/> Remember me*/}
+                                        {/*</label>*/}
+                                    {/*</div>*/}
+                                    <br/>
+                                    <br/>
+                                    <button className="btn btn-lg btn-outline-warning btn-block" type="submit">Sign In</button>
                                 </form>
                             </div>
                         </section>
