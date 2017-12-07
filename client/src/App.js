@@ -9,26 +9,39 @@ class App extends Component
     constructor(props)
     {
         super(props);
+
         this.state = {view: "home", user: null};
     }
 
     componentDidMount()
     {
-        //fetch celine from the user database
-        fetch('users/cdione')
-            .then((response) =>
-            {
-                return response.json();
-            })
-            .then((retrievedUser) =>
-            {
-                // alert(retrievedUser.username);
-                this.setState({user: retrievedUser});
-            })
-            .catch((error) =>
-            {
-                console.log(error);
-            });
+        // //fetch celine from the user database
+        // fetch('users/cdione')
+        //     .then((response) =>
+        //     {
+        //         return response.json();
+        //     })
+        //     .then((retrievedUser) =>
+        //     {
+        //         // alert(retrievedUser.username);
+        //         this.setState({user: retrievedUser});
+        //     })
+        //     .catch((error) =>
+        //     {
+        //         console.log(error);
+        //     });
+
+        let noUser = {
+            "username":"NOUSER",
+            "name":"NOUSER",
+            "lastName":"NOUSER",
+            "email":"NOUSER",
+            "friendUIDS":[],
+            "appointments":[],
+            "password":"NOUSER"
+        };
+
+        this.setState({user: noUser});
     }
 
     login()
@@ -244,54 +257,61 @@ class Profile extends Component
 
     render()
     {
-        return (
+        if(this.user.username === "NOUSER")
+        {
+            return (<h3 className={"text-center"}>Please Login to View your Profile</h3>);
+        }
+        else
+        {
+            return (
 
-            <div className="container">
-                <div className="header clearfix">
-                    <h1 id="username">{this.user.username}</h1>
-                    {/*<h3 className="text-muted">Profile</h3>*/}
-                </div>
+                <div className="container">
+                    <div className="header clearfix">
+                        <h1 id="username">{this.user.username}</h1>
+                        {/*<h3 className="text-muted">Profile</h3>*/}
+                    </div>
 
-                <div className="jumbotron-fluid">
+                    <div className="jumbotron-fluid">
 
-                    <div className="row align-self-auto">
-                        <div className="col-lg-4">
-                            <h4>Name</h4>
-                            <p id="name">{this.user.name}</p>
+                        <div className="row align-self-auto">
+                            <div className="col-lg-4">
+                                <h4>Name</h4>
+                                <p id="name">{this.user.name}</p>
 
-                            <h4>Email</h4>
-                            <p id="email">{this.user.email}</p>
+                                <h4>Email</h4>
+                                <p id="email">{this.user.email}</p>
+                            </div>
+                            <div className="col-lg-6">
+                                <h4>Last Name</h4>
+                                <p id="lastName">{this.user.lastName}</p>
+                            </div>
+
                         </div>
-                        <div className="col-lg-6">
-                            <h4>Last Name</h4>
-                            <p id="lastName">{this.user.lastName}</p>
+
+                        <br/>
+                        <h4>Friends</h4>
+                        <div>
+                            <table ref="friends" className={"table table-striped table-hover"}>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                </tr>
+                                <tr>
+                                    <td>someName</td>
+                                    <td>someEmail</td>
+                                </tr>
+                            </table>
                         </div>
 
                     </div>
 
-                    <br/>
-                    <h4>Friends</h4>
-                    <div>
-                        <table ref="friends" className={"table table-striped table-hover"}>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                            </tr>
-                            <tr>
-                                <td>someName</td>
-                                <td>someEmail</td>
-                            </tr>
-                        </table>
-                    </div>
 
+                    <footer className="footer">
+                        <p>&copy; Appointinator 2017</p>
+                    </footer>
                 </div>
-
-
-                <footer className="footer">
-                    <p>&copy; Appointinator 2017</p>
-                </footer>
-            </div>
-        )
+            )
+        }
     }
 }
 
@@ -314,6 +334,10 @@ class AllAppointmentsFor extends Component
         // alert("Fetching Stuff");
         //fetch appointments for the current user
         console.log("THIS IS THE USERNAME I'M SEARCHING: "+this.props.user.username);
+
+        if(this.props.user.username === "NOUSER")
+            return;
+
         fetch('users/' + this.props.user.username + '/appointments')
             .then((response) =>
             {
@@ -334,120 +358,127 @@ class AllAppointmentsFor extends Component
 
     render()
     {
-        if (this.state.fetched === true)
+        if(this.props.user.username === "NOUSER")
         {
-            let rows = [];
-            let appointments = this.state.appointments;
-
-            console.log("THIS I WILL USE");
-            console.log(appointments);
-            console.log(appointments[0]);
-
-            let index = 0;
-            let n = appointments.length;
-
-            rows.push(
-                <div className={"row"}>
-                    <th className={"col-sm-2"}>
-                        Starts
-                    </th>
-                    <th className={"col-sm-2"}>
-                        Ends
-                    </th>
-                    <th className={"col-sm-3"}>
-                        Description
-                    </th>
-                    <th className={"col-sm-3"}>
-                        Attendees
-                    </th>
-                </div>);
-
-            for (let i = index; i < n; i++)
-            {
-                let row = [];
-
-                if(i == 0)
-                {
-
-                }
-
-                // for (let element in appointments[i])
-                // {
-                //     if(appointments[i][element] === null)
-                //         console.log("NULL");
-                //     else
-                //         row.push(<div>{appointments[i][element].toString()}</div>);
-                // }
-
-                let startDate = new Date(appointments[i].startDate);
-                let sDate = startDate.toLocaleDateString();
-                let sTime = startDate.toLocaleTimeString();
-
-                let endDate = new Date(appointments[i].endDate);
-                let eDate = endDate.toLocaleDateString();
-                let eTime = endDate.toLocaleTimeString();
-
-                let parties = "";
-
-                for(let j in appointments[i].parties)
-                {
-                    if(j == 0)
-                        parties += appointments[i].parties[j];
-                    else
-                        parties += ", " + appointments[i].parties[j];
-                }
-
-
-                row.push(
-                    <div className={"row"}>
-                        <td className={"col-sm-2"}>
-                            {sDate+"\n"+sTime}
-                        </td>
-                        <td className={"col-sm-2"}>
-                            {eDate+"\n"+eTime}
-                        </td>
-                        <td className={"col-sm-3"}>
-                            {appointments[i].description.trim()}
-                        </td>
-                        <td className={"col-sm-3"}>
-                            {parties}
-                        </td>
-                    </div>);
-
-                rows.push(<tr>{row}</tr>);
-            }
-            //this all just makes an example table based on n inputs
-
-            console.log("ARRAY");
-            console.log(this.state.appointments);
-            // rows = ["test entry"];
-            //     let i =0;    //counter to track inside for of loop
-            // for(let app of this.state.appointments)
-            // {
-            //         i++;
-            //     console.log("app in this.state.appointments: "+app);
-            //     rows.push(<tr key={i} ><td>{app}</td></tr>)
-
-            // }
-            return (
-                <div className={"my_table"}>
-                    <h1 className={"text-center"}>Appointments Table</h1>
-                    <table id="simple-board" className="table table-striped">
-                        <tbody>
-                        {rows}
-                        </tbody>
-                    </table>
-                </div>
-
-            );
+            return (<h3 className={"text-center"}>Please Login to View your Appointments</h3>);
         }
         else
         {
-            return (
-                <div>
-                    <h3 className={"text-center"}>Please wait one moment while we load your appointments</h3>
-                </div>
-            )
+            if (this.state.fetched === true)
+            {
+                let rows = [];
+                let appointments = this.state.appointments;
+
+                console.log("THIS I WILL USE");
+                console.log(appointments);
+                console.log(appointments[0]);
+
+                let index = 0;
+                let n = appointments.length;
+
+                rows.push(
+                    <div className={"row"}>
+                        <th className={"col-sm-2"}>
+                            Starts
+                        </th>
+                        <th className={"col-sm-2"}>
+                            Ends
+                        </th>
+                        <th className={"col-sm-3"}>
+                            Description
+                        </th>
+                        <th className={"col-sm-3"}>
+                            Attendees
+                        </th>
+                    </div>);
+
+                for (let i = index; i < n; i++)
+                {
+                    let row = [];
+
+                    if (i == 0)
+                    {
+
+                    }
+
+                    // for (let element in appointments[i])
+                    // {
+                    //     if(appointments[i][element] === null)
+                    //         console.log("NULL");
+                    //     else
+                    //         row.push(<div>{appointments[i][element].toString()}</div>);
+                    // }
+
+                    let startDate = new Date(appointments[i].startDate);
+                    let sDate = startDate.toLocaleDateString();
+                    let sTime = startDate.toLocaleTimeString();
+
+                    let endDate = new Date(appointments[i].endDate);
+                    let eDate = endDate.toLocaleDateString();
+                    let eTime = endDate.toLocaleTimeString();
+
+                    let parties = "";
+
+                    for (let j in appointments[i].parties)
+                    {
+                        if (j == 0)
+                            parties += appointments[i].parties[j];
+                        else
+                            parties += ", " + appointments[i].parties[j];
+                    }
+
+
+                    row.push(
+                        <div className={"row"}>
+                            <td className={"col-sm-2"}>
+                                {sDate + "\n" + sTime}
+                            </td>
+                            <td className={"col-sm-2"}>
+                                {eDate + "\n" + eTime}
+                            </td>
+                            <td className={"col-sm-3"}>
+                                {appointments[i].description.trim()}
+                            </td>
+                            <td className={"col-sm-3"}>
+                                {parties}
+                            </td>
+                        </div>);
+
+                    rows.push(<tr>{row}</tr>);
+                }
+                //this all just makes an example table based on n inputs
+
+                console.log("ARRAY");
+                console.log(this.state.appointments);
+                // rows = ["test entry"];
+                //     let i =0;    //counter to track inside for of loop
+                // for(let app of this.state.appointments)
+                // {
+                //         i++;
+                //     console.log("app in this.state.appointments: "+app);
+                //     rows.push(<tr key={i} ><td>{app}</td></tr>)
+
+                // }
+                return (
+                    <div className={"my_table"}>
+                        <h1 className={"text-center"}>Appointments Table</h1>
+                        <table id="simple-board" className="table table-striped">
+                            <tbody>
+                            {rows}
+                            </tbody>
+                        </table>
+                    </div>
+
+                );
+            }
+            else
+            {
+                return (
+                    <div>
+                        <h3 className={"text-center"}>Please wait one moment while we load your appointments</h3>
+                    </div>
+                )
+            }
         }
     }
 }
