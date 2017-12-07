@@ -193,7 +193,7 @@ class NavBar extends Component
 	render()
 	{
 		return (
-		<nav className="navbar navbar-toggleable-md navbar-inverse bg-success fixed-top">
+		<nav className="navbar navbar-toggleable-md navbar-inverse bg-info fixed-top">
                     <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                             data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
                             aria-expanded="false"
@@ -345,22 +345,76 @@ class AllAppointmentsFor extends Component
 
             let index = 0;
             let n = appointments.length;
+
+            rows.push(
+                <div className={"row"}>
+                    <th className={"col-sm-2"}>
+                        Starts
+                    </th>
+                    <th className={"col-sm-2"}>
+                        Ends
+                    </th>
+                    <th className={"col-sm-3"}>
+                        Description
+                    </th>
+                    <th className={"col-sm-3"}>
+                        Attendees
+                    </th>
+                </div>);
+
             for (let i = index; i < n; i++)
             {
                 let row = [];
-                for (let element in appointments[i])
+
+                if(i == 0)
                 {
-                    if(appointments[i][element] === null)
-                        console.log("NULL");
-                    else
-                        row.push(<div>{appointments[i][element].toString()}</div>);
+
                 }
-                rows.push(
-                    <tr  key={i}>
-                        <td>{row}
-                        <br/>
+
+                // for (let element in appointments[i])
+                // {
+                //     if(appointments[i][element] === null)
+                //         console.log("NULL");
+                //     else
+                //         row.push(<div>{appointments[i][element].toString()}</div>);
+                // }
+
+                let startDate = new Date(appointments[i].startDate);
+                let sDate = startDate.toLocaleDateString();
+                let sTime = startDate.toLocaleTimeString();
+
+                let endDate = new Date(appointments[i].endDate);
+                let eDate = endDate.toLocaleDateString();
+                let eTime = endDate.toLocaleTimeString();
+
+                let parties = "";
+
+                for(let j in appointments[i].parties)
+                {
+                    if(j == 0)
+                        parties += appointments[i].parties[j];
+                    else
+                        parties += ", " + appointments[i].parties[j];
+                }
+
+
+                row.push(
+                    <div className={"row"}>
+                        <td className={"col-sm-2"}>
+                            {sDate+"\n"+sTime}
                         </td>
-                    </tr>);
+                        <td className={"col-sm-2"}>
+                            {eDate+"\n"+eTime}
+                        </td>
+                        <td className={"col-sm-3"}>
+                            {appointments[i].description.trim()}
+                        </td>
+                        <td className={"col-sm-3"}>
+                            {parties}
+                        </td>
+                    </div>);
+
+                rows.push(<tr>{row}</tr>);
             }
             //this all just makes an example table based on n inputs
 
@@ -376,9 +430,9 @@ class AllAppointmentsFor extends Component
 
             // }
             return (
-                <div className={"container"}>
+                <div className={"my_table"}>
                     <h1 className={"text-center"}>Appointments Table</h1>
-                    <table id="simple-board" className="table table-hover table-striped">
+                    <table id="simple-board" className="table table-striped">
                         <tbody>
                         {rows}
                         </tbody>

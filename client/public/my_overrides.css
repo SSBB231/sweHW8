@@ -13,10 +13,23 @@ ul
     vertical-align: top;
 }
 
-.friendsTable td:hover
+/*.my_table tr:hover*/
+/*{*/
+    /*border: 2px solid gold;*/
+/*}*/
+
+.my_table
 {
-    border: 2px solid gold;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
+
+/*.friendsTable td:hover*/
+/*{*/
+    /*border: 2px solid gold;*/
+/*}*/
 
 .myCol
 {
